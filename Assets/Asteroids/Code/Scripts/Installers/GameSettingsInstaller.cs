@@ -1,18 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
-public class GameSettingsInstaller : MonoBehaviour
+namespace Asteroids
 {
-    // Start is called before the first frame update
-    void Start()
+    [CreateAssetMenu(fileName = "New game settings", menuName = "Asteroids/Settings/Game settings")]
+    public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInstaller>
     {
-        
-    }
+        public GameInstaller.Settings GameSettings;
+        public PlayerMoveHandler.Settings MoveSettings;
+        public PlayerRotationHandler.Settings RotationSettings;
+        public PlayerHealthHandler.Settings HealthSettings;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        public override void InstallBindings()
+        {
+            Container.BindInstance(GameSettings).IfNotBound();
+            Container.BindInstance(MoveSettings).IfNotBound();
+            Container.BindInstance(RotationSettings).IfNotBound();
+            Container.BindInstance(HealthSettings).IfNotBound();
+        }
+    }   
 }

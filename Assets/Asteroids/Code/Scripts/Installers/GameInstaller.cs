@@ -1,18 +1,23 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
+using Zenject;
 
-public class GameInstaller : MonoBehaviour
+namespace Asteroids
 {
-    // Start is called before the first frame update
-    void Start()
+    public class GameInstaller : MonoInstaller
     {
+        [Serializable]
+        public class Settings
+        {
+            public GameObject AsteroidPrefab;
+        }
         
-    }
+        [Inject]
+        private Settings _settings;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+        public override void InstallBindings()
+        {
+            Container.Bind<ScreenBorders>().AsSingle().WithArguments(Camera.main);
+        }
+    }   
 }
