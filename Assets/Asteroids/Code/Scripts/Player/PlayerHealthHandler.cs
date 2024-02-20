@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace Asteroids
 {
@@ -7,8 +8,7 @@ namespace Asteroids
         [Serializable]
         public class Settings
         {
-            public float HealthLoss;
-            public float HitForce;
+            public float MaxHealth;
         }
 
         private readonly Player _player;
@@ -18,9 +18,10 @@ namespace Asteroids
         {
             _player = player;
             _settings = settings;
+            Debug.Log(_settings.MaxHealth);
         }
 
-        public void IncreaseHealth(float amount)
+        public void IncreaseHealth(int amount)
         {
             //todo: add health
         }
