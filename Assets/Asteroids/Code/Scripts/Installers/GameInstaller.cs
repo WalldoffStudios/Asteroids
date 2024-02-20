@@ -18,6 +18,7 @@ namespace Asteroids
         public override void InstallBindings()
         {
             Container.Bind<ScreenBorders>().AsSingle().WithArguments(Camera.main);
+            GameSignalsInstaller.Install(Container);
         }
     }   
 }
