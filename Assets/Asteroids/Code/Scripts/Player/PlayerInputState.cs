@@ -4,6 +4,7 @@ namespace Asteroids
 {
     public class PlayerInputState
     {
+        public bool LastMovementState { get; set; }
         public float HorizontalInput { get; set; }
         public float VerticalInput { get; set; }
         public Vector2 MovementInput => new Vector2(HorizontalInput, VerticalInput).normalized;

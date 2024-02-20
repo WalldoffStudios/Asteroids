@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Asteroids
 {
-    public class PlayerMoveHandler : IFixedTickable
+    public class PlayerMoveHandler : IInitializable, IDisposable
     {
         [Serializable]
         public class Settings
@@ -16,36 +16,48 @@ namespace Asteroids
         private readonly ScreenBorders _screenBorders;
         private readonly Settings _settings;
         private readonly Player _player;
-        private readonly PlayerInputState _inputState;
+        private readonly SignalBus _signalBus;
 
         public PlayerMoveHandler(
              ScreenBorders borders,
             Player player, 
             Settings settings, 
-            PlayerInputState inputState)
+             SignalBus signalBus)
         {
             _screenBorders = borders;
             _player = player;
             _settings = settings;
-            _inputState = inputState;
+            _signalBus = signalBus;
+        }
+        
+        public void Initialize()
+        {
+            _signalBus.Subscribe<MovementUpdateSignal>(MovePlayer);
         }
 
-        public void FixedTick()
+        public void Dispose()
+        {
+            _signalBus.Unsubscribe<MovementUpdateSignal>(MovePlayer);
+        }
+
+        private void MovePlayer(MovementUpdateSignal signal)
         {
             if(_player.IsDead == true) return;
-            
-            if (_inputState.IsMoving == true)
-            {
-                _player.AddForce(_inputState.MovementInput * _settings.MoveSpeed);
-            }
-            if (_player.Velocity.sqrMagnitude > 0.0f)
-            {
-                if (_screenBorders.IsNearEdge(_player.Position) == true)
-                {
-                    Vector2 direction = _screenBorders.GetBounceDirection(_player.Position, _player.Velocity);
-                    _player.Bounce(direction);
-                }
-            }
+            _player.AddForce(signal.Direction * _settings.MoveSpeed);
         }
+
+        // public void FixedTick()
+        // {
+        //     if(_player.IsDead == true) return;
+        //     
+        //     if (_player.Velocity.sqrMagnitude > 0.0f)
+        //     {
+        //         if (_screenBorders.IsNearEdge(_player.Position) == true)
+        //         {
+        //             Vector2 direction = _screenBorders.GetBounceDirection(_player.Position, _player.Velocity);
+        //             _player.Bounce(direction);
+        //         }
+        //     }
+        // }
     }   
 }
