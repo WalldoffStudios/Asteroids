@@ -6,7 +6,6 @@ namespace Asteroids
 {
     public class PlayerInstaller : MonoInstaller
     {
-        //try using a struct instead
         [Serializable]
         public class Settings
         {
@@ -19,9 +18,13 @@ namespace Asteroids
         public override void InstallBindings()
         {
             Container.Bind<Player>().AsSingle().WithArguments(settings.rigidBody, settings.renderer);
+            
             Container.BindInterfacesTo<PlayerInputHandler>().AsSingle();
+            Container.BindInterfacesTo<PlayerMoveHandler>().AsSingle();
+            Container.BindInterfacesTo<PlayerRotationHandler>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerHealthHandler>().AsSingle();
             
+            Container.Bind<PlayerInputState>().AsSingle();
         }
     }   
 }
