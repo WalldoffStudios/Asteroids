@@ -23,6 +23,7 @@ namespace Asteroids
             Container.BindInterfacesTo<PlayerMoveHandler>().AsSingle();
             Container.BindInterfacesTo<PlayerRotationHandler>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerHealthHandler>().AsSingle();
+            Container.BindInterfacesTo<PlayerBordersHandler>().AsSingle();
             
             Container.Bind<PlayerInputState>().AsSingle();
         }

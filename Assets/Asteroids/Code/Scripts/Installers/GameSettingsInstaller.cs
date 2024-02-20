@@ -10,6 +10,7 @@ namespace Asteroids
         public PlayerMoveHandler.Settings MoveSettings;
         public PlayerRotationHandler.Settings RotationSettings;
         public PlayerHealthHandler.Settings HealthSettings;
+        public PlayerBordersHandler.Settings BorderSettings;
 
         public override void InstallBindings()
         {
@@ -17,6 +18,7 @@ namespace Asteroids
             Container.BindInstance(MoveSettings).IfNotBound();
             Container.BindInstance(RotationSettings).IfNotBound();
             Container.BindInstance(HealthSettings).IfNotBound();
+            Container.BindInstance(BorderSettings).IfNotBound();
         }
     }   
 }

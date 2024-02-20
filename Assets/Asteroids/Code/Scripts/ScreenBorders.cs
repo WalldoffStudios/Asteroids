@@ -5,21 +5,7 @@ namespace Asteroids
     public class ScreenBorders
     {
         private readonly Camera _camera;
-
         public ScreenBorders(Camera camera) => _camera = camera;
-        public float ExtentHeight => _camera.orthographicSize;
-        public float ExtentWidth => _camera.aspect * _camera.orthographicSize;
-
-        public float Height => ExtentHeight * 2.0f;
-        public float ScreenWidth => ExtentWidth * 2.0f;
-        
-        public float Bottom => -ExtentHeight;
-
-        public float Top => ExtentHeight;
-
-        public float Left => -ExtentWidth;
-
-        public float Right => ExtentWidth;
 
         public bool IsNearEdge(Vector3 position)
         {
@@ -46,6 +32,25 @@ namespace Asteroids
             }
 
             return newDirection;
+        }
+        
+        public Vector3 GetTeleportPosition(Vector3 currentPosition)
+        {
+            Vector3 viewportPosition = _camera.WorldToViewportPoint(currentPosition);
+
+            // Invert the viewport position if it's outside the 0-1 range
+            viewportPosition.x = viewportPosition.x < 0 || viewportPosition.x > 1 ? 1 - viewportPosition.x : viewportPosition.x;
+            viewportPosition.y = viewportPosition.y < 0 || viewportPosition.y > 1 ? 1 - viewportPosition.y : viewportPosition.y;
+
+            // Ensure the viewport position is within bounds to avoid teleporting when in the center
+            viewportPosition.x = Mathf.Clamp(viewportPosition.x, 0.01f, 0.99f);
+            viewportPosition.y = Mathf.Clamp(viewportPosition.y, 0.01f, 0.99f);
+
+            // Convert the adjusted viewport position back to world space
+            Vector3 targetWorldPosition = _camera.ViewportToWorldPoint(viewportPosition);
+            targetWorldPosition.z = currentPosition.z; // Preserve the original Z coordinate
+
+            return targetWorldPosition;
         }
     }   
 }
