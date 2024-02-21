@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Zenject;
 using Random = UnityEngine.Random;
 
@@ -11,21 +12,31 @@ namespace Asteroids
         [Serializable]
         public class Settings
         {
-            //public int 
+            public float minSpeed;
+            public float maxSpeed;
+            public float minSize;
+            public float maxSize;
+            public LayerMask playerMask;
+            public LayerMask enemyMask;
+            public LayerMask projectileMask;
+            public bool bounceOnBorders;
+            public float borderCheckDelay;
         }
+        
+        private float _ticksSinceLastPositionUpdate;
         
         private readonly Asteroid.Factory _asteroidFactory;
         private readonly ScreenBorders _screenBorders;
+        private readonly Settings _settings;
         private readonly List<Asteroid> _activeAsteroids = new List<Asteroid>();
         private readonly float _spawnThreshold = 10; // minimum number of asteroids
 
-        public AsteroidManager(Asteroid.Factory asteroidFactory, ScreenBorders borders)
+        public AsteroidManager(Asteroid.Factory asteroidFactory, ScreenBorders borders, Settings settings)
         {
             _asteroidFactory = asteroidFactory;
             _screenBorders = borders;
+            _settings = settings;
         }
-
-        private float ticksSinceLastPositionUpdate;
         
         public void Initialize()
         {
@@ -34,39 +45,66 @@ namespace Asteroids
 
         public void Tick()
         {
-            ticksSinceLastPositionUpdate += Time.deltaTime;
-            if (ticksSinceLastPositionUpdate > 0.1f)
+            _ticksSinceLastPositionUpdate += Time.deltaTime;
+            if (_ticksSinceLastPositionUpdate > _settings.borderCheckDelay)
             {
-                MaintainAsteroidsInScreenSpace();
-                ticksSinceLastPositionUpdate = 0.0f;
+                BorderCheck();
+                _ticksSinceLastPositionUpdate = 0.0f;
             }
         }
 
         public void Dispose()
         {
-            
+            //todo: eventual cleanup
         }
 
-        private void MaintainAsteroidsInScreenSpace()
+        private void BorderCheck()
         {
-            for (int i = 0; i < _activeAsteroids.Count; i++)
+            foreach (var asteroid in _activeAsteroids)
             {
-                Asteroid asteroid = _activeAsteroids[i];
                 if (_screenBorders.IsNearEdge(asteroid.transform.position))
                 {
-                    Vector2 bounceDirection =
-                        _screenBorders.GetBounceDirection(asteroid.transform.position, asteroid.Velocity);
-                    
-                    asteroid.UpdateDirection(bounceDirection);
-                }   
+                    if (_settings.bounceOnBorders == true)
+                    {
+                        BounceAsteroid(asteroid);
+                    }
+                    else
+                    {
+                        TeleportAsteroid(asteroid);            
+                    }
+                }
             }
+        }
+
+        private void BounceAsteroid(Asteroid asteroid)
+        {
+            Vector2 bounceDirection =
+                _screenBorders.GetBounceDirection(asteroid.transform.position, asteroid.Velocity);
+                    
+            asteroid.UpdateDirection(bounceDirection);
+        }
+
+        private void TeleportAsteroid(Asteroid asteroid)
+        {
+            Vector2 teleportPosition = _screenBorders.GetTeleportPosition(asteroid.transform.position);
+            asteroid.transform.position = teleportPosition;
+            Debug.Log($"tried to teleport asteroid to location: {teleportPosition}");
         }
         
         private void EnsureAsteroids()
         {
             while (_activeAsteroids.Count < _spawnThreshold)
             {
-                var asteroid = _asteroidFactory.Create(Random.Range(1f, 3f), Random.Range(0.5f, 1.5f));
+                
+                AsteroidSpawnParams spawnParams = new AsteroidSpawnParams(
+                    Random.Range(_settings.minSpeed, _settings.maxSpeed),
+                    Random.Range(_settings.minSize, _settings.maxSize),
+                    _settings.playerMask,
+                    _settings.enemyMask,
+                    _settings.projectileMask
+                );
+                
+                Asteroid asteroid = _asteroidFactory.Create(spawnParams);
                 asteroid.transform.position = _screenBorders.GetRandomPositionWithinScreen();
                 _activeAsteroids.Add(asteroid);
             }

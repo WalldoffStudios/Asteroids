@@ -19,8 +19,8 @@ namespace Asteroids
         {
             Container.Bind<ScreenBorders>().AsSingle().WithArguments(Camera.main);
 
-            Container.BindFactory<float, float, Asteroid, Asteroid.Factory>()
-                .FromPoolableMemoryPool<float, float, Asteroid, AsteroidPool>(poolBinder => poolBinder
+            Container.BindFactory<AsteroidSpawnParams, Asteroid, Asteroid.Factory>()
+                .FromPoolableMemoryPool<AsteroidSpawnParams, Asteroid, AsteroidPool>(poolBinder => poolBinder
                     .WithInitialSize(20)
                     .FromComponentInNewPrefab(_settings.AsteroidPrefab)
                     .UnderTransformGroup("Asteroids"));
@@ -30,7 +30,7 @@ namespace Asteroids
             GameSignalsInstaller.Install(Container);
         }
         
-        public class AsteroidPool : MonoPoolableMemoryPool<float, float, IMemoryPool, Asteroid>
+        public class AsteroidPool : MonoPoolableMemoryPool<AsteroidSpawnParams, IMemoryPool, Asteroid>
         {
         }
     }   

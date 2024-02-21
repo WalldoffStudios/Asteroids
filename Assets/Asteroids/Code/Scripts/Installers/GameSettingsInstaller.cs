@@ -6,11 +6,12 @@ namespace Asteroids
     [CreateAssetMenu(fileName = "New game settings", menuName = "Asteroids/Settings/Game settings")]
     public class GameSettingsInstaller : ScriptableObjectInstaller<GameSettingsInstaller>
     {
-        public GameInstaller.Settings GameSettings;
+        [SerializeField] GameInstaller.Settings GameSettings;
         public PlayerMoveHandler.Settings MoveSettings;
         public PlayerRotationHandler.Settings RotationSettings;
         public PlayerHealthHandler.Settings HealthSettings;
         public PlayerBordersHandler.Settings BorderSettings;
+        public AsteroidManager.Settings AsteroidSettings;
 
         public override void InstallBindings()
         {
@@ -19,6 +20,7 @@ namespace Asteroids
             Container.BindInstance(RotationSettings).IfNotBound();
             Container.BindInstance(HealthSettings).IfNotBound();
             Container.BindInstance(BorderSettings).IfNotBound();
+            Container.BindInstance(AsteroidSettings).IfNotBound();
         }
     }   
 }
