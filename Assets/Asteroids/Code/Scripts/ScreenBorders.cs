@@ -11,10 +11,18 @@ namespace Asteroids
         {
             Vector3 screenPosition = _camera.WorldToViewportPoint(position);
             return 
-                screenPosition.x < 0.1f || 
-                screenPosition.x > 0.9f || 
-                screenPosition.y < 0.1f || 
-                screenPosition.y > 0.9f;
+                screenPosition.x < 0.01f || 
+                screenPosition.x > 0.99f || 
+                screenPosition.y < 0.01f || 
+                screenPosition.y > 0.99f;
+        }
+
+        public Vector3 GetRandomPositionWithinScreen()
+        {
+            float randomX = Random.Range(0.1f, 0.9f);
+            float randomy = Random.Range(0.1f, 0.9f);
+            Vector2 screenPos = _camera.ViewportToWorldPoint(new Vector3(randomX, randomy, 0.0f));
+            return screenPos;
         }
 
         public Vector3 GetBounceDirection(Vector3 position, Vector3 currentDirection)
@@ -22,14 +30,23 @@ namespace Asteroids
             Vector3 screenPosition = _camera.WorldToViewportPoint(position);
             Vector3 newDirection = currentDirection;
             
-            if (screenPosition.x is < 0.01f or > 0.99f)
+            if (screenPosition.x < 0.01f)
             {
-                newDirection.x = -newDirection.x;
+                newDirection.x = Mathf.Abs(newDirection.x);
             }
-            if (screenPosition.y is < 0.01f or > 0.99f)
+            if (screenPosition.x > 0.99f)
             {
-                newDirection.y = -newDirection.y;
+                if (newDirection.x > 0.0f) newDirection.x *= -1;
             }
+            if (screenPosition.y < 0.01f)
+            {
+                newDirection.y = Mathf.Abs(newDirection.y);
+            }
+            if (screenPosition.y > 0.99f)
+            {
+                if (newDirection.y > 0.0f) newDirection.y *= -1;
+            }
+            
 
             return newDirection;
         }
