@@ -23,3 +23,19 @@ MonoBehaviour:
     MaxHealth: 100
   BorderSettings:
     bounceOnBorders: 1
+  AsteroidSettings:
+    minSpeed: 2
+    maxSpeed: 4
+    minSize: 2
+    maxSize: 4
+    playerMask:
+      serializedVersion: 2
+      m_Bits: 64
+    enemyMask:
+      serializedVersion: 2
+      m_Bits: 128
+    projectileMask:
+      serializedVersion: 2
+      m_Bits: 256
+    useScreenBorders: 0
+    borderCheckDelay: 0.1
