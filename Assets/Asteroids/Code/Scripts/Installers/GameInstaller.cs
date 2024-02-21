@@ -18,7 +18,20 @@ namespace Asteroids
         public override void InstallBindings()
         {
             Container.Bind<ScreenBorders>().AsSingle().WithArguments(Camera.main);
+
+            Container.BindFactory<float, float, Asteroid, Asteroid.Factory>()
+                .FromPoolableMemoryPool<float, float, Asteroid, AsteroidPool>(poolBinder => poolBinder
+                    .WithInitialSize(20)
+                    .FromComponentInNewPrefab(_settings.AsteroidPrefab)
+                    .UnderTransformGroup("Asteroids"));
+
+            Container.BindInterfacesAndSelfTo<AsteroidManager>().AsSingle();
+            
             GameSignalsInstaller.Install(Container);
+        }
+        
+        public class AsteroidPool : MonoPoolableMemoryPool<float, float, IMemoryPool, Asteroid>
+        {
         }
     }   
 }
