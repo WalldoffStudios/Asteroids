@@ -5,8 +5,8 @@ namespace Asteroids
 {
     public struct AsteroidSpawnParams
     {
-        public float Speed;
-        public float Size;
+        public readonly float Speed;
+        public readonly float Size;
         public LayerMask PlayerLayerMask;
         public LayerMask EnemyLayerMask;
         public LayerMask ProjectileLayerMask;
@@ -26,18 +26,24 @@ namespace Asteroids
         }
     }
     
-    public class Asteroid : MonoBehaviour, IPoolable<float, float, IMemoryPool>
+    public class Asteroid : MonoBehaviour, IPoolable<AsteroidSpawnParams, IMemoryPool>
     {
         [SerializeField] private Rigidbody2D rigidBody = null;
         
         private float _speed;
         private float _size;
+        private LayerMask _playerLayer;
+        private LayerMask _enemyLayer;
+        private LayerMask _projectileLayer;
         private IMemoryPool _pool;
         
-        public void OnSpawned(float speed, float size, IMemoryPool pool)
+        public void OnSpawned(AsteroidSpawnParams spawnParams, IMemoryPool pool)
         {
-            _speed = speed;
-            _size = size;
+            _speed = spawnParams.Speed;
+            _size = spawnParams.Size;
+            _playerLayer = spawnParams.PlayerLayerMask;
+            _enemyLayer = spawnParams.EnemyLayerMask;
+            _projectileLayer = spawnParams.ProjectileLayerMask;
             _pool = pool;
         }
         
@@ -55,10 +61,30 @@ namespace Asteroids
 
         private void OnCollisionEnter2D(Collision2D other)
         {
+            if ((_playerLayer.value & (1 << other.gameObject.layer)) != 0)
+            {
+                Debug.Log("Collided with a player");
+                Despawn();
+            }
+            else if ((_enemyLayer.value & (1 << other.gameObject.layer)) != 0)
+            {
+                Debug.Log("Collided with a enemy");
+                Despawn();
+            }
+            else if ((_projectileLayer.value & (1 << other.gameObject.layer)) != 0)
+            {
+                Debug.Log("Collided with a projectile");
+                Despawn();
+            }
+        }
+
+        private void Despawn()
+        {
+            //todo: play explosion vfx
             _pool.Despawn(this);
         }
         
-        public class Factory : PlaceholderFactory<float, float, Asteroid>
+        public class Factory : PlaceholderFactory<AsteroidSpawnParams, Asteroid>
         {
         }
     }   
