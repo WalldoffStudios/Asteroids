@@ -30,12 +30,6 @@ namespace Asteroids
             set => _rigidBody.position = value;
         }
 
-        public Vector2 FakeVelocity
-        {
-            get;
-            set;
-        }
-
         public Vector2 MoveDirection
         {
             get;
