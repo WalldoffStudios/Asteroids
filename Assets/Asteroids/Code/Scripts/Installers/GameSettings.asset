@@ -15,9 +15,11 @@ MonoBehaviour:
   GameSettings:
     AsteroidPrefab: {fileID: 8772397792345427996, guid: cc1299521d6274d6b9f7a4efb4fe07ae, type: 3}
   MoveSettings:
-    MoveSpeed: 5
-    MaxSpeed: 10
+    MoveSpeed: 40
+    MaxSpeed: 40
   RotationSettings:
     RotationSpeed: 15
   HealthSettings:
     MaxHealth: 100
+  BorderSettings:
+    bounceOnBorders: 1
