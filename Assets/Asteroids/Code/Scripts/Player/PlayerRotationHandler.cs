@@ -14,13 +14,11 @@ namespace Asteroids
 
         private readonly Player _player;
         private readonly Settings _settings;
-        private readonly PlayerInputState _inputState;
 
-        public PlayerRotationHandler(Player player, Settings settings, PlayerInputState inputState)
+        public PlayerRotationHandler(Player player, Settings settings)
         {
             _player = player;
             _settings = settings;
-            _inputState = inputState;
         }
         
         public void Tick()
