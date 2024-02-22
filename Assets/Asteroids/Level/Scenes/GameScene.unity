@@ -549,3 +549,6 @@ MonoBehaviour:
   settings:
     rigidBody: {fileID: 454723056}
     renderer: {fileID: 454723057}
+    collisionLayers:
+      serializedVersion: 2
+      m_Bits: 384
