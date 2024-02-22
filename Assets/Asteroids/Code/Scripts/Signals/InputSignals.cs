@@ -15,6 +15,12 @@ namespace Asteroids
         public MovementUpdateSignal(Vector2 direction) => Direction = direction;
     }
 
+    public class ShootInputChangedSignal
+    {
+        public bool StartedShooting { get; private set; }
+        public ShootInputChangedSignal(bool startedFiring) => StartedShooting = startedFiring;
+    }
+
     public class CameraZoomSignal
     {
         public float ZoomLevel { get; private set; }

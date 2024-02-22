@@ -16,6 +16,13 @@ namespace Asteroids
 
         public void Tick()
         {
+            CheckMovementInput();
+            CheckZoomInput();
+            CheckFiringInput();
+        }
+
+        private void CheckMovementInput()
+        {
             _inputState.HorizontalInput = Input.GetAxisRaw("Horizontal");
             _inputState.VerticalInput = Input.GetAxisRaw("Vertical");
             bool movedLastFrame = _inputState.LastMovementState;
@@ -25,18 +32,30 @@ namespace Asteroids
                 _signalBus.Fire(new MovementStateChangedSignal(currentlyMoving));
                 _inputState.LastMovementState = currentlyMoving;
             }
-
+            
             if (currentlyMoving == true)
             {
                 _signalBus.Fire(new MovementUpdateSignal(_inputState.MovementInput));
             }
+        }
 
+        private void CheckZoomInput()
+        {
             if (Input.mouseScrollDelta.sqrMagnitude > 0.0f)
             {
                 _signalBus.Fire(new CameraZoomSignal(Input.mouseScrollDelta.y));
             }
-            
-            _inputState.IsFiring = Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0);
+        }
+
+        private void CheckFiringInput()
+        {
+            bool shotLastFrame = _inputState.LastShootingState;
+            bool isFiring = Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0);
+            if (shotLastFrame != isFiring)
+            {
+                _signalBus.Fire(new ShootInputChangedSignal(isFiring));
+                _inputState.LastShootingState = isFiring;
+            }
         }
     }   
 }
