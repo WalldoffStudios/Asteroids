@@ -17,7 +17,8 @@ namespace Asteroids
 
         public override void InstallBindings()
         {
-            Container.Bind<ScreenBorders>().AsSingle().WithArguments(Camera.main);
+            //Container.Bind<ScreenBorders>().AsSingle().WithArguments(Camera.main);
+            Container.BindInterfacesAndSelfTo<ScreenBorders>().AsSingle().WithArguments(Camera.main);
 
             Container.BindFactory<AsteroidSpawnParams, Asteroid, Asteroid.Factory>()
                 .FromPoolableMemoryPool<AsteroidSpawnParams, Asteroid, AsteroidPool>(poolBinder => poolBinder
