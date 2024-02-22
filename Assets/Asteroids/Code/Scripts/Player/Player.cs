@@ -30,12 +30,6 @@ namespace Asteroids
             set => _rigidBody.position = value;
         }
 
-        public Vector2 MoveDirection
-        {
-            get;
-            set;
-        }
-
         public Vector2 Velocity => _rigidBody.velocity;
 
         public void TakeDamage(float healthLoss)
