@@ -14,4 +14,10 @@ namespace Asteroids
 
         public MovementUpdateSignal(Vector2 direction) => Direction = direction;
     }
+
+    public class CameraZoomSignal
+    {
+        public float ZoomLevel { get; private set; }
+        public CameraZoomSignal(float zoomLevel) => ZoomLevel = zoomLevel;
+    }
 }
