@@ -27,22 +27,35 @@ namespace Asteroids
         {
             if(_player.IsDead == true) return;
             if (_player.Velocity.sqrMagnitude > 0.0f == false) return;
-            if (_screenBorders.IsInsideScreenBounds(_player.Position) == false)
+            Vector2 playerPos = _player.Position;
+            bool insideScreenBounds = _screenBorders.IsInsideScreenBounds(playerPos);
+
+            if (insideScreenBounds == true && _settings.bounceOnBorders == true)
             {
-                return;
+                if (_screenBorders.IsNearInsideEdge(_player.Position) == true)
+                {
+                    Vector2 direction = _screenBorders.GetBounceDirection(_player.Position, _player.Velocity);
+                    _player.Bounce(direction);    
+                }
             }
-            if (_screenBorders.IsNearEdge(_player.Position) == false) return;
-            
-            if (_settings.bounceOnBorders == true)
+            else if (insideScreenBounds == false && _settings.bounceOnBorders == false)
             {
-                Vector2 direction = _screenBorders.GetBounceDirection(_player.Position, _player.Velocity);
-                _player.Bounce(direction);   
-            }
-            else //if false we will teleport player
-            {
-                Vector2 teleportPosition = _screenBorders.GetTeleportPosition(_player.Position);
+                Vector2 teleportPosition = _screenBorders.GetTeleportPosition(_player.Position, _player.Velocity, 0.0f);
                 _player.Position = teleportPosition;
             }
+            // if (_screenBorders.IsInsideScreenBounds(_player.Position) == false)
+            // {
+            //     // Vector2 teleportPosition = _screenBorders.GetTeleportPosition(_player.Position, _player.Velocity, 0.0f);
+            //     // _player.Position = teleportPosition;
+            //     return;
+            // }
+            // if (_screenBorders.IsNearInsideEdge(_player.Position) == false || _settings.bounceOnBorders == false) return;
+            //
+            // if (_settings.bounceOnBorders == true)
+            // {
+            //     Vector2 direction = _screenBorders.GetBounceDirection(_player.Position, _player.Velocity);
+            //     _player.Bounce(direction);   
+            // }
         }
     }   
 }
