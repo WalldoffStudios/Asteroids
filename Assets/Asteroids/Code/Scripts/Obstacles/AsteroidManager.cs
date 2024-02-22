@@ -13,14 +13,12 @@ namespace Asteroids
         {
             public float minSpeed;
             public float maxSpeed;
-            public float minSize;
-            public float maxSize;
-            public LayerMask playerMask;
-            public LayerMask enemyMask;
-            public LayerMask projectileMask;
+            public int minSize;
+            public int maxSize;
+            [Tooltip("This value is multiplied by the asteroid size")]public float asteroidDamage;
+            [Tooltip("Asteroid will try to damage objects on this layer")] public LayerMask collisionLayers;
             public bool bounceOnBorders;
             public float borderCheckDelay;
-            public int maxAsteroidCount;
             public int minAsteroidCount;
             public float asteroidSpawnDelay;
         }
@@ -34,7 +32,6 @@ namespace Asteroids
         private readonly Settings _settings;
         private readonly SignalBus _signalBus;
         private readonly Dictionary<int, Asteroid> _activeAsteroids = new Dictionary<int, Asteroid>();
-        //private readonly List<Asteroid> _activeAsteroids = new List<Asteroid>();
 
         public AsteroidManager(
             Asteroid.Factory asteroidFactory,
@@ -52,28 +49,22 @@ namespace Asteroids
         public void Initialize()
         {
             SpawnNewAsteroids();
-            _signalBus.Subscribe<ObstacleDestroyed>(OnAsteroidDestroyed);
+            _signalBus.Subscribe<ObjectDestroyed>(OnAsteroidDestroyed);
         }
         
         public void Dispose()
         {
-            _signalBus.Unsubscribe<ObstacleDestroyed>(OnAsteroidDestroyed);
+            _signalBus.Unsubscribe<ObjectDestroyed>(OnAsteroidDestroyed);
         }
         
-        private void OnAsteroidDestroyed(ObstacleDestroyed signal)
+        private void OnAsteroidDestroyed(ObjectDestroyed signal)
         {
-            if (signal.Size < 1.0f)
+            if (_activeAsteroids.ContainsKey(signal.ObjectId) == true)
             {
-                if (_activeAsteroids.ContainsKey(signal.ObjectId) == true)
-                {
-                    _activeAsteroids.Remove(signal.ObjectId);
-                }
-                else
-                {
-                    Debug.LogError("Tried to remove asteroid that didnt even exist in dictionary");
-                }
-                return;
+                _activeAsteroids.Remove(signal.ObjectId);
+                if(_activeAsteroids.Count < _settings.minAsteroidCount) SpawnNewAsteroids();
             }
+            if (signal.Size < 1.0f) return;
             
             float speed = Random.Range(_settings.minSpeed, _settings.maxSpeed);
             float size = signal.Size / 2.0f;
@@ -124,17 +115,22 @@ namespace Asteroids
             foreach (var keyValuePair in _activeAsteroids)
             {
                 Asteroid asteroid = keyValuePair.Value;
-                if (_screenBorders.IsInsideScreenBounds(asteroid.transform.position) == false) continue;
-                if (_screenBorders.IsNearEdge(asteroid.transform.position))
+
+                if (_screenBorders.IsInsideScreenBounds(asteroid.transform.position) == false)
                 {
-                    if (_settings.bounceOnBorders == true)
+                    if(_settings.bounceOnBorders == true) continue;
+
+                    if (_screenBorders.IsWithinTeleportEdge(asteroid.transform.position, asteroid.Size))
                     {
-                        BounceAsteroid(asteroid);
+                        TeleportAsteroid(asteroid);
+                        continue;
                     }
-                    else
-                    {
-                        TeleportAsteroid(asteroid);            
-                    }
+                }
+
+                if (!_screenBorders.IsNearInsideEdge(asteroid.transform.position)) continue;
+                if (_settings.bounceOnBorders == true)
+                {
+                    BounceAsteroid(asteroid);
                 }
             }
         }
@@ -149,8 +145,13 @@ namespace Asteroids
 
         private void TeleportAsteroid(Asteroid asteroid)
         {
-            Vector2 teleportPosition = _screenBorders.GetTeleportPosition(asteroid.transform.position);
+            Vector2 teleportPosition = _screenBorders.GetTeleportPosition(asteroid.transform.position, asteroid.Velocity, asteroid.Size);
             asteroid.transform.position = teleportPosition;
+            if (_screenBorders.NearHorizontalEdge(teleportPosition.x) && Mathf.Abs(asteroid.Velocity.y) < 0.25f ||
+                _screenBorders.NearVerticalEdge(teleportPosition.y) && Mathf.Abs(asteroid.Velocity.x) < 0.25f)
+            {
+                asteroid.UpdateDirection(_screenBorders.GetRandomPositionWithinScreen() - teleportPosition);
+            }
         }
         
         private void SpawnNewAsteroids()
@@ -158,9 +159,8 @@ namespace Asteroids
             int activeAsteroids = _activeAsteroids.Count;
             if (activeAsteroids < _settings.minAsteroidCount)
             {
-                for (int i = activeAsteroids; i <= _settings.minAsteroidCount; i++)
+                for (int i = activeAsteroids; i < _settings.minAsteroidCount; i++)
                 {
-
                     Asteroid asteroid = SpawnAsteroid(
                         Random.Range(_settings.minSpeed, _settings.maxSpeed), 
                         Random.Range(_settings.minSize, _settings.maxSize));
@@ -169,11 +169,7 @@ namespace Asteroids
                     asteroid.transform.position = asteroidPos;
                     Vector2 directionToScreen = (_screenBorders.GetRandomPositionWithinScreen() - asteroidPos).normalized;
                     asteroid.UpdateDirection(directionToScreen);
-                    
-                    // _activeAsteroids.Add(_spawnedAsteroids, asteroid);    
                 }
-            
-                // UpdateAsteroidDirections();   
             }
         }
 
@@ -183,9 +179,8 @@ namespace Asteroids
                 _spawnedAsteroids,
                 speed,
                 size,
-                _settings.playerMask,
-                _settings.enemyMask,
-                _settings.projectileMask
+                Mathf.RoundToInt(_settings.asteroidDamage * size),
+                _settings.collisionLayers
             );
                 
             Asteroid asteroid = _asteroidFactory.Create(spawnParams);
