@@ -20,7 +20,7 @@ namespace Asteroids
             Container.BindInstance(RotationSettings).IfNotBound();
             Container.BindInstance(HealthSettings).IfNotBound();
             Container.BindInstance(BorderSettings).IfNotBound();
-            Container.BindInstance(AsteroidSettings).IfNotBound();
+            Container.BindInstance(AsteroidSettings).IfNotBound();     
         }
     }   
 }

@@ -8,8 +8,13 @@ namespace Asteroids
         {
             SignalBusInstaller.Install(Container);
 
+            //Input signals
             Container.DeclareSignal<MovementStateChangedSignal>();
             Container.DeclareSignal<MovementUpdateSignal>();
+            Container.DeclareSignal<CameraZoomSignal>();
+
+            //Obstacle signals
+            Container.DeclareSignal<ObstacleDestroyed>();
         }
     }   
 }

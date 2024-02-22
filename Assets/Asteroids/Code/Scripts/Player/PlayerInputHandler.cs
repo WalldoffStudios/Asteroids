@@ -30,6 +30,11 @@ namespace Asteroids
             {
                 _signalBus.Fire(new MovementUpdateSignal(_inputState.MovementInput));
             }
+
+            if (Input.mouseScrollDelta.sqrMagnitude > 0.0f)
+            {
+                _signalBus.Fire(new CameraZoomSignal(Input.mouseScrollDelta.y));
+            }
             
             _inputState.IsFiring = Input.GetKey(KeyCode.Space) || Input.GetMouseButton(0);
         }

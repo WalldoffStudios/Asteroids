@@ -24,10 +24,10 @@ MonoBehaviour:
   BorderSettings:
     bounceOnBorders: 1
   AsteroidSettings:
-    minSpeed: 2
-    maxSpeed: 4
-    minSize: 2
-    maxSize: 4
+    minSpeed: 3
+    maxSpeed: 6
+    minSize: 1
+    maxSize: 2
     playerMask:
       serializedVersion: 2
       m_Bits: 64
@@ -36,6 +36,9 @@ MonoBehaviour:
       m_Bits: 128
     projectileMask:
       serializedVersion: 2
-      m_Bits: 256
-    useScreenBorders: 0
-    borderCheckDelay: 0.1
+      m_Bits: 512
+    bounceOnBorders: 1
+    borderCheckDelay: 0.01
+    maxAsteroidCount: 50
+    minAsteroidCount: 3
+    asteroidSpawnDelay: 1
