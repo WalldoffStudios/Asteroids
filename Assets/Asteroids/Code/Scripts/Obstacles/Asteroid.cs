@@ -5,31 +5,28 @@ namespace Asteroids
 {
     public struct AsteroidSpawnParams
     {
-        public int Id;
+        public readonly int Id;
         public readonly float Speed;
         public readonly float Size;
-        public LayerMask PlayerLayerMask;
-        public LayerMask EnemyLayerMask;
-        public LayerMask ProjectileLayerMask;
+        public readonly int CollisionDamage; 
+        public readonly LayerMask CollisionLayers;
 
         public AsteroidSpawnParams(
             int id,
             float speed,
             float size,
-            LayerMask player,
-            LayerMask enemy,
-            LayerMask projectile)
+            int collisionDamage,
+            LayerMask collisionLayers)
         {
             Id = id;
             Speed = speed;
             Size = size;
-            PlayerLayerMask = player;
-            EnemyLayerMask = enemy;
-            ProjectileLayerMask = projectile;
+            CollisionDamage = collisionDamage;
+            CollisionLayers = collisionLayers;
         }
     }
     
-    public class Asteroid : MonoBehaviour, IPoolable<AsteroidSpawnParams, IMemoryPool>
+    public class Asteroid : MonoBehaviour, IPoolable<AsteroidSpawnParams, IMemoryPool>, IDamageAble
     {
         [SerializeField] private Rigidbody2D rigidBody = null;
 
@@ -37,25 +34,25 @@ namespace Asteroids
         private SignalBus _signalBus;
         
         public Vector2 Velocity => rigidBody.velocity;
+        public float Size { get; private set; }
+        private bool _hasCollided;
 
         private int _id;
         private float _speed;
-        private float _size;
+        private int _collisionDamage;
         private LayerMask _playerLayer;
-        private LayerMask _enemyLayer;
-        private LayerMask _projectileLayer;
         private IMemoryPool _pool;
         
         public void OnSpawned(AsteroidSpawnParams spawnParams, IMemoryPool pool)
         {
             _id = spawnParams.Id;
             _speed = spawnParams.Speed;
-            _size = spawnParams.Size;
-            _playerLayer = spawnParams.PlayerLayerMask;
-            _enemyLayer = spawnParams.EnemyLayerMask;
-            _projectileLayer = spawnParams.ProjectileLayerMask;
+            _collisionDamage = spawnParams.CollisionDamage;
+            Size = spawnParams.Size;
+            _playerLayer = spawnParams.CollisionLayers;
             _pool = pool;
-            transform.localScale = Vector2.one * _size;
+            transform.localScale = Vector2.one * Size;
+            _hasCollided = false;
         }
         
         public void OnDespawned()
@@ -66,39 +63,40 @@ namespace Asteroids
         
         public void UpdateDirection(Vector2 direction)
         {
-            Debug.Log($"Direction pass in was {direction}");
             rigidBody.velocity = direction * _speed;
             rigidBody.velocity = Vector2.ClampMagnitude(rigidBody.velocity, _speed);
         }
 
         private void OnCollisionEnter2D(Collision2D other)
         {
+            if (_hasCollided == true) return;
             if ((_playerLayer.value & (1 << other.gameObject.layer)) != 0)
             {
-                Debug.Log("Collided with a player");
-                Despawn();
+                IDamageAble damageAble = other.gameObject.GetComponent<IDamageAble>();
+                if (damageAble != null)
+                {
+                    Debug.Log("Collided with player and tried to damage it");
+                    damageAble.TakeDamage(_collisionDamage);
+                }
+                else
+                {
+                    Debug.LogError("Collided with object on collision layer but it didnt have IDamageable interface");
+                }
             }
-            else if ((_enemyLayer.value & (1 << other.gameObject.layer)) != 0)
-            {
-                Debug.Log("Collided with a enemy");
-                Despawn();
-            }
-            else if ((_projectileLayer.value & (1 << other.gameObject.layer)) != 0)
-            {
-                Debug.Log("Collided with a projectile");
-                Despawn();
-            }
+        }
+        
+        public void TakeDamage(int amount)
+        {
+            Despawn();
         }
 
         private void Despawn()
         {
-            //todo: play explosion vfx
-            var transform1 = transform;
-            // if (transform1.localScale.x > 1.0f)
-            // {
-            //     // _signalBus.Fire(new ObstacleDestroyed(transform1.position, transform1.localScale.x));   
-            // }
-            _signalBus.Fire(new ObstacleDestroyed(_id, transform1.position, transform1.localScale.x));
+            _hasCollided = true;
+            
+            Transform asteroidTransform = transform;
+            _signalBus.Fire(new ObjectDestroyed(_id, asteroidTransform.position, asteroidTransform.localScale.x));
+            
             _pool.Despawn(this);
         }
         
