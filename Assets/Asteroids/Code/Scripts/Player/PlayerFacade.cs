@@ -15,9 +15,7 @@ namespace Asteroids
         }
         
         public bool IsDead => _player.IsDead;
-
-        public Vector2 MoveDirection => _player.MoveDirection;
-        public Vector2 Position => _player.Position;
+        
         public float Rotation => _player.Rotation;
 
         private void Update()
@@ -25,8 +23,6 @@ namespace Asteroids
             Vector3 localEulers = transform.localEulerAngles;
             localEulers.z = Rotation;
             transform.rotation = Quaternion.Euler(localEulers);
-
-            //transform.position = Position;
         }
     }   
 }
