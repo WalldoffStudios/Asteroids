@@ -11,20 +11,24 @@ namespace Asteroids
         {
             public Rigidbody2D rigidBody;
             public SpriteRenderer renderer;
+            public LayerMask collisionLayers;
         }
 
         [SerializeField] private Settings settings = null;
 
         public override void InstallBindings()
         {
-            Container.Bind<Player>().AsSingle().WithArguments(settings.rigidBody, settings.renderer);
-            
+            Container.Bind<Player>().AsSingle().WithArguments(settings.rigidBody, settings.renderer, settings.collisionLayers);
+            //Container.BindInstance(_speed).WhenInjectedInto<ShipInputHandler>();
+            // Container.BindInterfacesAndSelfTo<PlayerFacade>().FromComponentInHierarchy().AsSingle();
+            Container.BindInterfacesAndSelfTo<PlayerFacade>().FromComponentInChildren().AsSingle();
             Container.BindInterfacesTo<PlayerInputHandler>().AsSingle();
             Container.BindInterfacesTo<PlayerMoveHandler>().AsSingle();
             Container.BindInterfacesTo<PlayerRotationHandler>().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerHealthHandler>().AsSingle();
             Container.BindInterfacesTo<PlayerBordersHandler>().AsSingle();
-            
+            Container.Bind<IWeapon>().To<LazerWeapon>().AsSingle();
+            Container.BindInterfacesTo<PlayerWeaponHandler>().AsSingle();
             Container.Bind<PlayerInputState>().AsSingle();
         }
     }   
