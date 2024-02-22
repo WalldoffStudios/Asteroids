@@ -27,6 +27,10 @@ namespace Asteroids
         {
             if(_player.IsDead == true) return;
             if (_player.Velocity.sqrMagnitude > 0.0f == false) return;
+            if (_screenBorders.IsInsideScreenBounds(_player.Position) == false)
+            {
+                return;
+            }
             if (_screenBorders.IsNearEdge(_player.Position) == false) return;
             
             if (_settings.bounceOnBorders == true)
