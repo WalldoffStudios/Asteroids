@@ -15,6 +15,8 @@ namespace Asteroids
         [SerializeField] private AsteroidManager.Settings asteroidSettings = null;
         [SerializeField] private ScreenBorders.Settings screenBorderSettings = null;
         
+        [SerializeField] private UIHeaderCanvas headerCanvasSettings = null;
+        
 
         public override void InstallBindings()
         {
@@ -28,6 +30,8 @@ namespace Asteroids
             Container.BindInstance(playerBorderSettings).IfNotBound();
             
             Container.BindInstance(asteroidSettings).IfNotBound();     
+            
+            Container.BindInstance(headerCanvasSettings).IfNotBound();
         }
     }   
 }

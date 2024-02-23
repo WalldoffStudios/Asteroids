@@ -15,8 +15,9 @@ namespace Asteroids
             Container.DeclareSignal<ShootInputChangedSignal>();
 
             //Status signals
-            Container.DeclareSignal<PlayerHealthStatusChanged>();
-            Container.DeclareSignal<ObjectDestroyed>();
+            Container.DeclareSignal<PlayerHealthStatusChangedSignal>();
+            Container.DeclareSignal<PlayerHealthInitializedSignal>();
+            Container.DeclareSignal<ObjectDestroyedSignal>();
         }
     }   
 }
