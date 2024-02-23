@@ -179,7 +179,7 @@ namespace Asteroids
                 _spawnedAsteroids,
                 speed,
                 size,
-                Mathf.RoundToInt(_settings.asteroidDamage * size),
+                _settings.asteroidDamage,
                 _settings.collisionLayers
             );
                 

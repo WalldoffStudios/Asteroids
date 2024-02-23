@@ -6,12 +6,14 @@ namespace Asteroids
     {
         private readonly Rigidbody2D _rigidBody;
         public SpriteRenderer Renderer { get; }
+        public Transform ShootPoint { get; }
         public LayerMask CollisionLayers { get; }
         
-        public Player(Rigidbody2D rigidBody, SpriteRenderer renderer, LayerMask collisionLayers)
+        public Player(Rigidbody2D rigidBody, SpriteRenderer renderer, Transform shootPoint, LayerMask collisionLayers)
         {
             _rigidBody = rigidBody;
             Renderer = renderer;
+            ShootPoint = shootPoint;
             CollisionLayers = collisionLayers;
         }
         public bool IsDead { get; private set; }
@@ -42,7 +44,7 @@ namespace Asteroids
         {
             IsDead = true;
             _rigidBody.velocity = Vector2.zero;
-            Debug.Log("Player died");
+            Renderer.enabled = false;
         }
     }   
 }

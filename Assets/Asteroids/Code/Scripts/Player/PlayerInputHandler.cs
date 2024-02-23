@@ -19,6 +19,7 @@ namespace Asteroids
             CheckMovementInput();
             CheckZoomInput();
             CheckFiringInput();
+            CheckForAimInput();
         }
 
         private void CheckMovementInput()
@@ -56,6 +57,18 @@ namespace Asteroids
                 _signalBus.Fire(new ShootInputChangedSignal(isFiring));
                 _inputState.LastShootingState = isFiring;
             }
+        }
+
+        private void CheckForAimInput()
+        {
+            Vector2 mousePos = Input.mousePosition;
+            _signalBus.Fire(new AimInputSignal(mousePos));
+            
+            // if (Vector2.Distance(mousePos, _inputState.LastAimPosition) > 0.05f)
+            // {
+            //     _signalBus.Fire(new AimInputSignal(mousePos));
+            //     _inputState.LastAimPosition = mousePos;
+            // }
         }
     }   
 }

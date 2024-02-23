@@ -30,7 +30,8 @@ namespace Asteroids
 
         public void TakeDamage(int amount)
         {
-            _signalBus.Fire(new PlayerHealthStatusChanged(-amount));
+            Debug.Log($"player facade triggered health update with {-amount}, parameter input was {amount}");
+            _signalBus.Fire(new PlayerHealthStatusChangedSignal(-amount));
         }
     }   
 }

@@ -15,14 +15,13 @@ namespace Asteroids
         
         public void Fire()
         {
-            BulletSpawnParams spawnParams = new BulletSpawnParams(2.0f, 10.0f, _player.CollisionLayers);
+            BulletSpawnParams spawnParams = new BulletSpawnParams(2, 20.0f, _player.CollisionLayers);
             LazerBullet bullet = _bulletFactory.Create(spawnParams);
-
-            Vector2 normalizedVelocity = _player.Velocity.normalized;
-            bullet.transform.position = _player.Position + normalizedVelocity * 0.6f;
             
-            //player is rotated towards its velocity so we can use it to spawn bullet at correct spot
-            bullet.SetDirection(normalizedVelocity);
+            Vector2 direction = ((Vector2)_player.ShootPoint.position - _player.Position).normalized;
+            bullet.transform.position = _player.ShootPoint.position;
+            
+            bullet.SetDirection(direction);
         }
     }   
 }

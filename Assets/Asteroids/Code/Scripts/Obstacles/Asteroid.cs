@@ -75,13 +75,8 @@ namespace Asteroids
                 IDamageAble damageAble = other.gameObject.GetComponent<IDamageAble>();
                 if (damageAble != null)
                 {
-                    Debug.Log($"Asteroid tried to trigger player damage with amount {Mathf.RoundToInt(_collisionDamage * Size)}");
                     damageAble.TakeDamage(Mathf.RoundToInt(_collisionDamage * Size));
                     Despawn();
-                }
-                else
-                {
-                    Debug.LogError("Collided with object on collision layer but it didnt have IDamageable interface");
                 }
             }
         }
@@ -96,7 +91,9 @@ namespace Asteroids
             _hasCollided = true;
             
             Transform asteroidTransform = transform;
-            _signalBus.Fire(new ObjectDestroyedSignal(_id, asteroidTransform.position, asteroidTransform.localScale.x));
+            Vector2 position = asteroidTransform.position;
+            _signalBus.Fire(new ObjectDestroyedSignal(_id, position, asteroidTransform.localScale.x));
+            _signalBus.Fire(new CurrencySpawnSignal(position, 2));
             
             _pool.Despawn(this);
         }

@@ -6,11 +6,11 @@ namespace Asteroids
 {
     public struct BulletSpawnParams
     {
-        public float Damage;
-        public float Speed;
-        public LayerMask CollisionLayers;
+        public int Damage { get; }
+        public float Speed{ get; }
+        public LayerMask CollisionLayers{ get; }
 
-        public BulletSpawnParams(float damage, float speed, LayerMask collisionLayers)
+        public BulletSpawnParams(int damage, float speed, LayerMask collisionLayers)
         {
             Damage = damage;
             Speed = speed;
@@ -21,7 +21,7 @@ namespace Asteroids
     {
         [SerializeField] private Rigidbody2D rigidBody = null;
 
-        private float _damage;
+        private int _damage;
         private float _speed;
         private LayerMask _collisionLayers;
         private IMemoryPool _pool;
@@ -41,10 +41,12 @@ namespace Asteroids
 
         public void SetDirection(Vector2 direction)
         {
-            Vector2 velocity = direction * _speed;
-            rigidBody.velocity = velocity;
-            
-            float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 70.0f;
+            rigidBody.AddForce(direction * _speed, ForceMode2D.Impulse);
+            //Vector2 velocity = direction * _speed;
+            //rigidBody.velocity = velocity;
+
+            Vector2 velocity = rigidBody.velocity;
+            float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90.0f;
             rigidBody.rotation = angle;
         }
 
@@ -52,7 +54,11 @@ namespace Asteroids
         {
             if ((_collisionLayers.value & (1 << other.gameObject.layer)) != 0)
             {
-                
+                IDamageAble damageAble = other.gameObject.GetComponent<IDamageAble>();
+                if (damageAble != null)
+                {
+                    damageAble.TakeDamage(_damage);
+                }
                 if(_pool != null) _pool.Despawn(this);   
             }
         }

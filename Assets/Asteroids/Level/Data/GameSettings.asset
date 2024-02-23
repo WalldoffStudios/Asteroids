@@ -18,8 +18,6 @@ MonoBehaviour:
   moveSettings:
     MoveSpeed: 40
     MaxSpeed: 40
-  rotationSettings:
-    RotationSpeed: 15
   healthSettings:
     maxHealth: 100
   playerWeaponSettings:
@@ -46,4 +44,8 @@ MonoBehaviour:
     teleportEdgeCheckDistance: 2
     teleportDistance: 0.25
     spawnBorderOffset: 0.3
-  headerCanvasSettings: {fileID: 5712484631742678953, guid: 179074b7d834e4595b51edc1e7f57632, type: 3}
+  coinManagerSettings:
+    minPopupSpeed: 1
+    maxPopupSpeed: 3
+    cornerXPadding: 40
+    cornerYPadding: 40

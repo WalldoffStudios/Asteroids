@@ -21,6 +21,12 @@ namespace Asteroids
         public ShootInputChangedSignal(bool startedFiring) => StartedShooting = startedFiring;
     }
 
+    public class AimInputSignal
+    {
+        public Vector2 AimPosition { get; private set; }
+        public AimInputSignal(Vector2 aimPosition) => AimPosition = aimPosition;
+    }
+
     public class CameraZoomSignal
     {
         public float ZoomLevel { get; private set; }
