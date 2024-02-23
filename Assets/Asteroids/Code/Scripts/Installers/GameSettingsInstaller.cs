@@ -8,14 +8,13 @@ namespace Asteroids
     {
         [SerializeField] private GameInstaller.Settings gameSettings = null;
         [SerializeField] private PlayerMoveHandler.Settings moveSettings = null;
-        [SerializeField] private PlayerRotationHandler.Settings rotationSettings = null;
         [SerializeField] private PlayerHealthHandler.Settings healthSettings = null;
         [SerializeField] private PlayerWeaponHandler.Settings playerWeaponSettings = null;
         [SerializeField] private PlayerBordersHandler.Settings playerBorderSettings = null;
         [SerializeField] private AsteroidManager.Settings asteroidSettings = null;
         [SerializeField] private ScreenBorders.Settings screenBorderSettings = null;
         
-        [SerializeField] private UIHeaderCanvas headerCanvasSettings = null;
+        [SerializeField] private UICoinManager.Settings coinManagerSettings = null;
         
 
         public override void InstallBindings()
@@ -24,14 +23,13 @@ namespace Asteroids
             Container.BindInstance(screenBorderSettings).IfNotBound();
             
             Container.BindInstance(moveSettings).IfNotBound();
-            Container.BindInstance(rotationSettings).IfNotBound();
             Container.BindInstance(healthSettings).IfNotBound();
             Container.BindInstance(playerWeaponSettings).IfNotBound();
             Container.BindInstance(playerBorderSettings).IfNotBound();
             
             Container.BindInstance(asteroidSettings).IfNotBound();     
             
-            Container.BindInstance(headerCanvasSettings).IfNotBound();
+            Container.BindInstance(coinManagerSettings).IfNotBound();
         }
     }   
 }

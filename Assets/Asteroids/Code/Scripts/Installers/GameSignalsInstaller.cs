@@ -13,11 +13,16 @@ namespace Asteroids
             Container.DeclareSignal<MovementUpdateSignal>();
             Container.DeclareSignal<CameraZoomSignal>();
             Container.DeclareSignal<ShootInputChangedSignal>();
+            Container.DeclareSignal<AimInputSignal>();
 
             //Status signals
             Container.DeclareSignal<PlayerHealthStatusChangedSignal>();
             Container.DeclareSignal<PlayerHealthInitializedSignal>();
             Container.DeclareSignal<ObjectDestroyedSignal>();
+            
+            //Currency signals
+            Container.DeclareSignal<CurrencyAmountChangedSignal>();
+            Container.DeclareSignal<CurrencySpawnSignal>();
         }
     }   
 }

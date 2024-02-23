@@ -339,8 +339,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08a06357c2e6d40da9f1cb92759b71fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  <HeaderContainerRect>k__BackingField: {fileID: 5712484631742678954}
+  <CoinsContainer>k__BackingField: {fileID: 0}
   <HealthText>k__BackingField: {fileID: 5712484631538541755}
   <HealthRect>k__BackingField: {fileID: 5712484631367404649}
+  <CurrencyText>k__BackingField: {fileID: 5712484632219894518}
+  <CurrencyImageRect>k__BackingField: {fileID: 5712484632947476603}
 --- !u!1 &5712484632219894512
 GameObject:
   m_ObjectHideFlags: 0
