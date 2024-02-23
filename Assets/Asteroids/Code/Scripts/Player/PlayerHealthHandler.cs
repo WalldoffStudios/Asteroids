@@ -28,15 +28,16 @@ namespace Asteroids
         public void Initialize()
         {
             _currentHealth = _settings.maxHealth;
-            _signalBus.Subscribe<PlayerHealthStatusChanged>(HandleHealthChange);
+            _signalBus.Fire(new PlayerHealthInitializedSignal(_settings.maxHealth));
+            _signalBus.Subscribe<PlayerHealthStatusChangedSignal>(HandleHealthChange);
         }
 
         public void Dispose()
         {
-            _signalBus.Unsubscribe<PlayerHealthStatusChanged>(HandleHealthChange);
+            _signalBus.Unsubscribe<PlayerHealthStatusChangedSignal>(HandleHealthChange);
         }
 
-        private void HandleHealthChange(PlayerHealthStatusChanged signal)
+        private void HandleHealthChange(PlayerHealthStatusChangedSignal signal)
         {
             int amount = signal.HealthAmount;
             if (amount > 0)
@@ -47,8 +48,6 @@ namespace Asteroids
             {
                 DecreaseHealth(amount);
             }
-            
-            Debug.Log($"Player health was updated, new health is {_currentHealth}");
         }
 
         private void IncreaseHealth(int amount)
@@ -56,9 +55,10 @@ namespace Asteroids
             _currentHealth = Mathf.Min(_currentHealth + amount, _settings.maxHealth);
         }
 
+        //amount is a negative value here
         private void DecreaseHealth(int amount)
         {
-            _currentHealth = Mathf.Max(0, _currentHealth - amount);
+            _currentHealth = Mathf.Max(0, _currentHealth + amount);
             if(_currentHealth == 0) _player.Died();
         }
     }   

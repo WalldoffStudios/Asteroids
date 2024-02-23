@@ -8,14 +8,14 @@ namespace Asteroids
         public readonly int Id;
         public readonly float Speed;
         public readonly float Size;
-        public readonly int CollisionDamage; 
+        public readonly float CollisionDamage; 
         public readonly LayerMask CollisionLayers;
 
         public AsteroidSpawnParams(
             int id,
             float speed,
             float size,
-            int collisionDamage,
+            float collisionDamage,
             LayerMask collisionLayers)
         {
             Id = id;
@@ -39,7 +39,7 @@ namespace Asteroids
 
         private int _id;
         private float _speed;
-        private int _collisionDamage;
+        private float _collisionDamage;
         private LayerMask _playerLayer;
         private IMemoryPool _pool;
         
@@ -75,8 +75,9 @@ namespace Asteroids
                 IDamageAble damageAble = other.gameObject.GetComponent<IDamageAble>();
                 if (damageAble != null)
                 {
-                    Debug.Log("Collided with player and tried to damage it");
-                    damageAble.TakeDamage(_collisionDamage);
+                    Debug.Log($"Asteroid tried to trigger player damage with amount {Mathf.RoundToInt(_collisionDamage * Size)}");
+                    damageAble.TakeDamage(Mathf.RoundToInt(_collisionDamage * Size));
+                    Despawn();
                 }
                 else
                 {
@@ -95,7 +96,7 @@ namespace Asteroids
             _hasCollided = true;
             
             Transform asteroidTransform = transform;
-            _signalBus.Fire(new ObjectDestroyed(_id, asteroidTransform.position, asteroidTransform.localScale.x));
+            _signalBus.Fire(new ObjectDestroyedSignal(_id, asteroidTransform.position, asteroidTransform.localScale.x));
             
             _pool.Despawn(this);
         }

@@ -49,15 +49,15 @@ namespace Asteroids
         public void Initialize()
         {
             SpawnNewAsteroids();
-            _signalBus.Subscribe<ObjectDestroyed>(OnAsteroidDestroyed);
+            _signalBus.Subscribe<ObjectDestroyedSignal>(OnAsteroidDestroyed);
         }
         
         public void Dispose()
         {
-            _signalBus.Unsubscribe<ObjectDestroyed>(OnAsteroidDestroyed);
+            _signalBus.Unsubscribe<ObjectDestroyedSignal>(OnAsteroidDestroyed);
         }
         
-        private void OnAsteroidDestroyed(ObjectDestroyed signal)
+        private void OnAsteroidDestroyed(ObjectDestroyedSignal signal)
         {
             if (_activeAsteroids.ContainsKey(signal.ObjectId) == true)
             {

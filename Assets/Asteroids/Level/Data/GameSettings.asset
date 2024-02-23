@@ -21,7 +21,7 @@ MonoBehaviour:
   rotationSettings:
     RotationSpeed: 15
   healthSettings:
-    MaxHealth: 100
+    maxHealth: 100
   playerWeaponSettings:
     cooldownDelay: 0.5
   playerBorderSettings:
@@ -31,15 +31,10 @@ MonoBehaviour:
     maxSpeed: 4
     minSize: 1
     maxSize: 4
-    playerMask:
+    asteroidDamage: 5
+    collisionLayers:
       serializedVersion: 2
-      m_Bits: 64
-    enemyMask:
-      serializedVersion: 2
-      m_Bits: 128
-    projectileMask:
-      serializedVersion: 2
-      m_Bits: 512
+      m_Bits: 192
     bounceOnBorders: 0
     borderCheckDelay: 0.01
     minAsteroidCount: 3
@@ -48,6 +43,7 @@ MonoBehaviour:
     minZoomLevel: 5
     maxZoomLevel: 100
     edgeCheckDistance: 0.3
-    teleportEdgeCheckDistance: 1
+    teleportEdgeCheckDistance: 2
     teleportDistance: 0.25
     spawnBorderOffset: 0.3
+  headerCanvasSettings: {fileID: 5712484631742678953, guid: 179074b7d834e4595b51edc1e7f57632, type: 3}
