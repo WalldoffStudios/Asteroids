@@ -7,6 +7,9 @@ namespace Asteroids
         public override void InstallBindings()
         {
             SignalBusInstaller.Install(Container);
+            
+            //GameManager signals
+            Container.DeclareSignal<GameStateChangedSignal>();
 
             //Input signals
             Container.DeclareSignal<MovementStateChangedSignal>();
