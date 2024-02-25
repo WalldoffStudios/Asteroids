@@ -29,14 +29,14 @@ namespace Asteroids
             //ChangeState(GameStates.Boot);
             Debug.Log("GameManager was initialized");
             //_signalBus.Subscribe<AssetsBoundSignal>(DownloadedAssets);
-            _signalBus.Subscribe<GameSceneInitializedSignal>(GameSceneLoaded);
+            _signalBus.Subscribe<GameSceneInitializedSignal>(GameSceneInitialized);
             ChangeState(GameStates.Boot);
         }
 
         public void Dispose()
         {
             //_signalBus.Unsubscribe<AssetsBoundSignal>(DownloadedAssets);
-            _signalBus.Unsubscribe<GameSceneInitializedSignal>(GameSceneLoaded);
+            _signalBus.Unsubscribe<GameSceneInitializedSignal>(GameSceneInitialized);
         }
 
         private void DownloadedAssets()
@@ -57,7 +57,7 @@ namespace Asteroids
         }
 
         //is called when scene context is finished with installs
-        private void GameSceneLoaded(GameSceneInitializedSignal signal)
+        private void GameSceneInitialized(GameSceneInitializedSignal signal)
         {
             ChangeState(GameStates.WaitingToStart);
             MonoBehaviourHelper.Instance.InvokeWithDelay(StartGame, 5.0f);

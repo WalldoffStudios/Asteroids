@@ -9,6 +9,7 @@ namespace Asteroids
         [Serializable]
         public class Settings
         {
+            public Collider2D collider;
             public Rigidbody2D rigidBody;
             public SpriteRenderer renderer;
             public Transform shootPoint;
@@ -19,7 +20,7 @@ namespace Asteroids
 
         public override void InstallBindings()
         {
-            Container.Bind<Player>().AsSingle().WithArguments(settings.rigidBody, settings.renderer, settings.shootPoint, settings.collisionLayers);
+            Container.Bind<Player>().AsSingle().WithArguments(settings.collider, settings.rigidBody, settings.renderer, settings.shootPoint, settings.collisionLayers);
             //Container.BindInstance(_speed).WhenInjectedInto<ShipInputHandler>();
             // Container.BindInterfacesAndSelfTo<PlayerFacade>().FromComponentInHierarchy().AsSingle();
             Container.BindInterfacesAndSelfTo<PlayerFacade>().FromComponentInChildren().AsSingle();

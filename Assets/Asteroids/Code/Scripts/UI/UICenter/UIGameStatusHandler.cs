@@ -30,7 +30,6 @@ namespace Asteroids
 
         private void GameStateChanged(GameStateChangedSignal signal)
         {
-            Debug.LogError($"uigame status handler got change state callback with state {signal.State}");
             switch (signal.State)
             {
                 case GameStates.Boot:

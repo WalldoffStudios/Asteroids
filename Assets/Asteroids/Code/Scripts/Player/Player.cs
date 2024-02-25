@@ -1,16 +1,19 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Asteroids
 {
     public class Player
     {
+        private readonly Collider2D _collider;
         private readonly Rigidbody2D _rigidBody;
         public SpriteRenderer Renderer { get; }
         public Transform ShootPoint { get; }
         public LayerMask CollisionLayers { get; }
         
-        public Player(Rigidbody2D rigidBody, SpriteRenderer renderer, Transform shootPoint, LayerMask collisionLayers, PlayerTextureReference playerData)
+        public Player(Collider2D collider, Rigidbody2D rigidBody, SpriteRenderer renderer, Transform shootPoint, LayerMask collisionLayers, PlayerTextureReference playerData)
         {
+            _collider = collider;
             _rigidBody = rigidBody;
             Renderer = renderer;
             ShootPoint = shootPoint;
@@ -45,7 +48,10 @@ namespace Asteroids
         {
             IsDead = true;
             _rigidBody.velocity = Vector2.zero;
+            _collider.enabled = false;
             Renderer.enabled = false;
+
+            SceneManager.LoadScene(1);
         }
     }   
 }

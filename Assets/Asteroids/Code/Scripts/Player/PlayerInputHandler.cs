@@ -7,11 +7,13 @@ namespace Asteroids
     public class PlayerInputHandler : IInitializable, ITickable, IDisposable
     {
         private readonly PlayerInputState _inputState;
+        private readonly Player _player;
         private readonly SignalBus _signalBus;
 
-        public PlayerInputHandler(PlayerInputState inputState, SignalBus signalBus)
+        public PlayerInputHandler(PlayerInputState inputState, Player player, SignalBus signalBus)
         {
             _inputState = inputState;
+            _player = player;
             _signalBus = signalBus;
         }
 
@@ -35,6 +37,7 @@ namespace Asteroids
         public void Tick()
         {
             if(_currentState != GameStates.Playing) return;
+            if(_player.IsDead == true) return;
             CheckMovementInput();
             CheckZoomInput();
             CheckFiringInput();

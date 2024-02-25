@@ -41,7 +41,6 @@ namespace Asteroids
 
         private IEnumerator GameCountdownRoutine(TextMeshProUGUI countDownText, float time, Action callbackOnEnd = null)
         {
-            //countDownText.text = $"Game starting in {time} seconds";
             int secondsRounded = Mathf.RoundToInt(time);
             for (int i = 0; i < secondsRounded; i++)
             {
@@ -50,6 +49,35 @@ namespace Asteroids
             }
             
             callbackOnEnd?.Invoke();
+        }
+
+        public void TweenScale(Transform tweenTransform, float startScale, float targetScale, float time)
+        {
+            StartCoroutine(TweenScaleRoutine(tweenTransform, startScale, targetScale, time));
+        }
+
+        private IEnumerator TweenScaleRoutine(Transform tweenTransform, float startScale, float targetScale, float time)
+        {
+            float tweenTimer = 0.0f;
+            float speedMultiplier = 1.0f / time;
+            
+            while (tweenTimer < 1.0f)
+            {
+                tweenTimer += Time.deltaTime * speedMultiplier;
+                float scaleMultiplier = Mathf.Lerp(startScale, targetScale, tweenTimer);
+                tweenTransform.localScale = Vector2.one * scaleMultiplier;
+                yield return null;
+            }
+
+            tweenTimer = 0.0f;
+            while (tweenTimer < 1.0f)
+            {
+                tweenTimer += Time.deltaTime * speedMultiplier;
+                float scaleMultiplier = Mathf.Lerp(targetScale, startScale, tweenTimer);
+                tweenTransform.localScale = Vector2.one * scaleMultiplier;
+                yield return null;
+            }
+            tweenTransform.localScale = Vector2.one * startScale;
         }
     }   
 }

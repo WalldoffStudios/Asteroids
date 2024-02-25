@@ -884,6 +884,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
+    collider: {fileID: 454723061}
     rigidBody: {fileID: 454723056}
     renderer: {fileID: 454723057}
     shootPoint: {fileID: 1971006510}
