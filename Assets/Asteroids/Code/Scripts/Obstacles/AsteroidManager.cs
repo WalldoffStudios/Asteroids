@@ -15,6 +15,7 @@ namespace Asteroids
             public float maxSpeed;
             public int minSize;
             public int maxSize;
+            public int asteroidSplitCount;
             [Tooltip("This value is multiplied by the asteroid size")]public float asteroidDamage;
             [Tooltip("Asteroid will try to damage objects on this layer")] public LayerMask collisionLayers;
             public bool bounceOnBorders;
@@ -45,16 +46,28 @@ namespace Asteroids
             _settings = settings;
             _signalBus = signalBus;
         }
+
+        private GameStates _currentState;
         
         public void Initialize()
         {
-            SpawnNewAsteroids();
+            _signalBus.Subscribe<GameStateChangedSignal>(GameStateChanged);
             _signalBus.Subscribe<ObjectDestroyedSignal>(OnAsteroidDestroyed);
         }
         
         public void Dispose()
         {
+            _signalBus.Unsubscribe<GameStateChangedSignal>(GameStateChanged);
             _signalBus.Unsubscribe<ObjectDestroyedSignal>(OnAsteroidDestroyed);
+        }
+
+        private void GameStateChanged(GameStateChangedSignal signal)
+        {
+            if (signal.State == GameStates.Playing)
+            {
+                SpawnNewAsteroids();
+                _currentState = signal.State;
+            }
         }
         
         private void OnAsteroidDestroyed(ObjectDestroyedSignal signal)
@@ -68,13 +81,13 @@ namespace Asteroids
             
             float speed = Random.Range(_settings.minSpeed, _settings.maxSpeed);
             float size = signal.Size / 2.0f;
-            int numberOfAsteroids = 5;
+            int numberOfAsteroids = _settings.asteroidSplitCount;
             float angleIncrement = 360.0f / numberOfAsteroids;
             for (int i = 0; i < numberOfAsteroids; i++)
             {
                 float angleRadians = Mathf.Deg2Rad * (angleIncrement * i);
                 Vector2 spawnDirection = new Vector2(Mathf.Cos(angleRadians), Mathf.Sin(angleRadians));
-                Vector3 spawnPosition = signal.Position + (spawnDirection * 0.25f) ;
+                Vector3 spawnPosition = signal.Position + (spawnDirection * 0.25f);
                 
                 Asteroid asteroid = SpawnAsteroid(speed, size);
                 asteroid.transform.position = spawnPosition;
@@ -84,6 +97,7 @@ namespace Asteroids
 
         public void Tick()
         {
+            if(_currentState != GameStates.Playing) return;
             float deltaTime = Time.deltaTime;
             
             TickPositionUpdates(deltaTime);

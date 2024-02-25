@@ -29,6 +29,7 @@ MonoBehaviour:
     maxSpeed: 4
     minSize: 1
     maxSize: 4
+    asteroidSplitCount: 5
     asteroidDamage: 5
     collisionLayers:
       serializedVersion: 2
@@ -43,7 +44,7 @@ MonoBehaviour:
     edgeCheckDistance: 0.3
     teleportEdgeCheckDistance: 2
     teleportDistance: 0.25
-    spawnBorderOffset: 0.3
+    spawnBorderOffset: 0.15
   coinManagerSettings:
     minPopupSpeed: 1
     maxPopupSpeed: 3

@@ -65,7 +65,7 @@ namespace Asteroids
             {
                 tweenTimer += Time.deltaTime * speedMultiplier;
                 float scaleMultiplier = Mathf.Lerp(startScale, targetScale, tweenTimer);
-                tweenTransform.localScale = Vector2.one * scaleMultiplier;
+                if(tweenTransform != null) tweenTransform.localScale = Vector2.one * scaleMultiplier;
                 yield return null;
             }
 
@@ -74,7 +74,7 @@ namespace Asteroids
             {
                 tweenTimer += Time.deltaTime * speedMultiplier;
                 float scaleMultiplier = Mathf.Lerp(targetScale, startScale, tweenTimer);
-                tweenTransform.localScale = Vector2.one * scaleMultiplier;
+                if(tweenTransform != null) tweenTransform.localScale = Vector2.one * scaleMultiplier;
                 yield return null;
             }
             tweenTransform.localScale = Vector2.one * startScale;
