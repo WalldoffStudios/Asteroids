@@ -16,6 +16,9 @@ The player is decoupled with several different classes each handling a specific 
 **Decisions and challenges:**
 - Opting for Extenject (Zenject) was a deliberate choice despite my lack of prior experience with it. The initial learning phase was somewhat slow, yet as I grew more familiar with its features, my appreciation for it deepened. It has reached a point where I envision using it for all my personal projects going forward. Although the learning curve initially slowed my progress, the investment has proven worthwhile.
 
-Unit Tests: Unfortunately, I did not incorporate unit tests in my project. However, after researching the topic extensively, I recognize their value and plan to integrate them into my future projects regularly.
+- Unit Tests: Unfortunately, I did not incorporate unit tests in my project. However, after researching the topic extensively, I recognize their value and plan to integrate them into my future projects regularly.
 
-Addressables: Having previous experience with addressables, I was able to implement them relatively quickly. Currently, I am storing three assets with addressables but only utilize two, as I did not prioritize integrating audio into the game.
+- Addressables: Having previous experience with addressables, I was able to implement them relatively quickly. Currently, I am storing three assets with addressables but only utilize two, as I did not prioritize integrating audio into the game.
+
+- Visual effects: As I've worked quite a lot with shaders I had quite a few ideas on cool effects to implement but I ended up not writing any shader code at all, I dont even have a flashing effect on the player when it takes damage. I felt like it was more important to focus solely on a clean codebase than making the game look good and I'm somewhat happy about the result in the time given.
+
