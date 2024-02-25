@@ -42,9 +42,12 @@ namespace Asteroids
             StartCoroutine(LoadAssetsCoroutine());
         }
 
+        private int totalDownloadOperations = 1;
         private IEnumerator LoadAssetsCoroutine()
         {
             int operationsSuccessful = 0;
+            loadingStatusText.text = $"Downloading player texture";
+            loadingPercentageText.text = $"0% / 0%";
             // AsyncOperationHandle<Texture2D> textureHandle = playerTextureReference.LoadAssetAsync<Texture2D>();
             // yield return textureHandle;
             // if (textureHandle.Status == AsyncOperationStatus.Succeeded)
@@ -63,6 +66,8 @@ namespace Asteroids
                 Sprite newSprite = Sprite.Create(playerTexture, new Rect(0.0f, 0.0f, playerTexture.width, playerTexture.height), new Vector2(0.5f, 0.5f), 100.0f);
                 _playerTextureAsset = new PlayerTextureAsset(newSprite);
                 operationsSuccessful++;
+                loadingStatusText.text = $"Player texture downloaded";
+                loadingPercentageText.text = $"{operationsSuccessful / totalDownloadOperations} / 100%";
             }
         
             // Load the audio clip
@@ -88,7 +93,8 @@ namespace Asteroids
             DiContainer projectContainer = ProjectContext.Instance.Container;
             projectContainer.BindInstance(_playerTextureAsset).IfNotBound();
             
-            _signalBus.Fire(new AssetsBoundSignal());
+            _signalBus.Fire(new TriggerSceneChangeSignal(1));
+            //_signalBus.Fire(new AssetsBoundSignal());
         }
     }   
 }

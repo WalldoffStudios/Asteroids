@@ -8,12 +8,14 @@ namespace Asteroids
     public class UIPlayerStatusHandler : IInitializable, IDisposable
     {
         private readonly SignalBus _signalBus;
+        private readonly GameObject _healthContainer;
         private readonly TextMeshProUGUI _healthText;
         private readonly RectTransform _healthBarRect;
 
         public UIPlayerStatusHandler(UIHeaderCanvas headerCanvas, SignalBus signalBus)
         {
             _signalBus = signalBus;
+            _healthContainer = headerCanvas.HealthContainer;
             _healthText = headerCanvas.HealthText;
             _healthBarRect = headerCanvas.HealthRect;
         }
@@ -25,6 +27,7 @@ namespace Asteroids
         {
             _signalBus.Subscribe<PlayerHealthInitializedSignal>(HealthInitialized);
             _signalBus.Subscribe<PlayerHealthStatusChangedSignal>(HealthStatusChanged);
+            _healthContainer.gameObject.SetActive(false);
         }
 
         public void Dispose()
@@ -37,6 +40,7 @@ namespace Asteroids
         {
             _maxHealth = Mathf.Max(1, signal.MaxHealth);
             _currentHealth = _maxHealth;
+            _healthContainer.gameObject.SetActive(true);
             UpdateHealthUI();
         }
 

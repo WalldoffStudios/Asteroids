@@ -1,5 +1,4 @@
 using System.Collections;
-using DG.Tweening;
 using UnityEngine;
 using Zenject;
 
@@ -45,26 +44,8 @@ namespace Asteroids
 
         public void PopupCoin()
         {
-            // transform.localScale = Vector2.zero;
-            // DOTween.Sequence().Append(transform.DOScale(Vector3.one, _popupSpeed * 0.5f).SetEase(Ease.InOutQuad));
-            // Vector2 randomDirection = (Random.insideUnitCircle - (Vector2)transform.position).normalized; 
-            // Vector2 randomPosition = (Vector2)transform.position + randomDirection;
-            // DOTween.Sequence().Append(rectTransform.DOLocalMove(randomPosition, _popupSpeed).SetEase(Ease.InOutQuad).OnComplete(CollectCoin));
             StartCoroutine(ScaleLerpRoutine());
         }
-
-        // private void CollectCoin()
-        // {
-        //     DOTween.Sequence()
-        //         .Append(rectTransform
-        //             .DOLocalMove(_targetPosition, _collectSpeed)
-        //             .SetEase(Ease.InOutQuad)).OnComplete(() =>
-        //             {
-        //                 _signalBus.Fire(new CurrencyAmountChangedSignal(1));
-        //                 Debug.Log("Should despawn coin");
-        //                 _pool.Despawn(this);
-        //             });
-        // }
         
         private IEnumerator ScaleLerpRoutine()
         {
@@ -89,15 +70,28 @@ namespace Asteroids
             StartCoroutine(LerpToCorner());
         }
         
-        public static Vector3 EaseInOutQuad(Vector3 a, Vector3 b, float t, float d = 1f)
+        //todo: move to static extension class
+        private static Vector3 EaseInOutQuad(Vector3 start, Vector3 end, float time, float duration = 1f)
         {
-            // quadratic easing in/out - acceleration until halfway, then deceleration
-            Vector3 c = b - a;
-            t /= d / 2;
-            if (t < 1) return c / 2 * t * t + a;
-            t--;
-            return -c / 2 * (t * (t - 2) - 1) + a;
+            // Calculate the change in position.
+            Vector3 change = end - start;
+    
+            // Normalize time to half of the duration to simplify the easing calculation.
+            time /= duration / 2;
+    
+            // First half of the easing (accelerating from start to halfway)
+            if (time < 1)
+            {
+                return change / 2 * time * time + start;
+            }
+    
+            // Adjust time for the second half of the easing (decelerating to the end)
+            time--;
+    
+            // Second half of the easing (decelerating to the end)
+            return -change / 2 * (time * (time - 2) - 1) + start;
         }
+
 
         private IEnumerator LerpToCorner()
         {

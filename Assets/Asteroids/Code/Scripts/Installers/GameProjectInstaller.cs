@@ -11,6 +11,7 @@ namespace Asteroids
             //Container.BindInterfacesAndSelfTo<AddressablesManager>().FromComponentInHierarchy().AsSingle();
             //Container.BindInterfacesAndSelfTo<AddressablesManager>().FromComponentInHierarchy().AsSingle();
             GameSignalsInstaller.Install(Container);
+            Container.BindInterfacesTo<SceneHandler>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameManager>().AsSingle().NonLazy();
             // GameSignalsInstaller.Install(Container);
 

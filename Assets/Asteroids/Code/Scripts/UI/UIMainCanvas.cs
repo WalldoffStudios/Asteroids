@@ -18,11 +18,12 @@ namespace Asteroids
         public void Initialize()
         {
             _signalBus.Subscribe<GameStateChangedSignal>(GameStateChanged);
+            _mainCanvasRect.gameObject.SetActive(false);
         }
 
         public void Dispose()
         {
-            _mainCanvasRect.gameObject.SetActive(false);
+            _signalBus.Unsubscribe<GameStateChangedSignal>(GameStateChanged);
         }
         
         private void GameStateChanged(GameStateChangedSignal signal)

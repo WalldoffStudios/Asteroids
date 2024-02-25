@@ -34,18 +34,18 @@ namespace Asteroids
             method.Invoke();
         }
 
-        public void GameCountdown(TextMeshProUGUI countDownText, float time, Action callbackOnEnd)
+        public void GameCountdown(TextMeshProUGUI countDownText, float time, Action callbackOnEnd = null)
         {
             StartCoroutine(GameCountdownRoutine(countDownText, time, callbackOnEnd));
         }
 
-        private IEnumerator GameCountdownRoutine(TextMeshProUGUI countDownText, float time, Action callbackOnEnd)
+        private IEnumerator GameCountdownRoutine(TextMeshProUGUI countDownText, float time, Action callbackOnEnd = null)
         {
             //countDownText.text = $"Game starting in {time} seconds";
             int secondsRounded = Mathf.RoundToInt(time);
             for (int i = 0; i < secondsRounded; i++)
             {
-                countDownText.text = $"Game starting in {time - i} seconds";
+                countDownText.text = $"{time - i} seconds";
                 yield return new WaitForSeconds(1.0f);
             }
             

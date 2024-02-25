@@ -8,17 +8,10 @@ namespace Asteroids
     public enum GameStates
     {
         Boot = 0,
-        MainMenu = 1,
+        GameSceneLoading = 1,
         WaitingToStart = 2,
         Playing = 3,
         LevelComplete = 4,
-    }
-
-    public class GameStateChangedSignal
-    {
-        public GameStates State { get; private set; }
-
-        public GameStateChangedSignal(GameStates state) => State = state;
     }
     
     public class GameManager : IInitializable, IDisposable
@@ -35,30 +28,39 @@ namespace Asteroids
         {
             //ChangeState(GameStates.Boot);
             Debug.Log("GameManager was initialized");
-            _signalBus.Subscribe<AssetsBoundSignal>(DownloadedAssets);
+            //_signalBus.Subscribe<AssetsBoundSignal>(DownloadedAssets);
+            _signalBus.Subscribe<GameSceneInitializedSignal>(GameSceneLoaded);
             ChangeState(GameStates.Boot);
         }
 
         public void Dispose()
         {
-            _signalBus.Unsubscribe<AssetsBoundSignal>(DownloadedAssets);
+            //_signalBus.Unsubscribe<AssetsBoundSignal>(DownloadedAssets);
+            _signalBus.Unsubscribe<GameSceneInitializedSignal>(GameSceneLoaded);
         }
 
         private void DownloadedAssets()
         {
             //ChangeState(GameStates.Boot);
             var loadOperation = SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
-            loadOperation.completed += SceneLoaded;
+            //loadOperation.completed += SceneLoaded;
         }
 
         private void SceneLoaded(AsyncOperation operation)
         {
-            ChangeState(GameStates.WaitingToStart);
+            // ChangeState(GameStates.GameSceneLoading);
             
-            operation.completed -= SceneLoaded;
+            //operation.completed -= SceneLoaded;
             
-            MonoBehaviourHelper.Instance.InvokeWithDelay(StartGame, 5.0f);
+            // MonoBehaviourHelper.Instance.InvokeWithDelay(StartGame, 5.0f);
             //MonoBehaviourHelper.Instance.GameCountdown();
+        }
+
+        //is called when scene context is finished with installs
+        private void GameSceneLoaded(GameSceneInitializedSignal signal)
+        {
+            ChangeState(GameStates.WaitingToStart);
+            MonoBehaviourHelper.Instance.InvokeWithDelay(StartGame, 5.0f);
         }
 
         private void StartGame()

@@ -36,10 +36,8 @@ namespace Asteroids
                     .WithInitialSize(20)
                     .FromComponentInNewPrefab(_settings.LazerBulletPrefab)
                     .UnderTransformGroup("Lazer Bullets"));
-            
-            // GameSignalsInstaller.Install(Container);
         }
-        
+
         public class AsteroidPool : MonoPoolableMemoryPool<AsteroidSpawnParams, IMemoryPool, Asteroid>
         {
         }

@@ -39,7 +39,6 @@ namespace Asteroids
         
         public void Initialize()
         {
-            _signalBus.Subscribe<GameStateChangedSignal>(GameStateChanged);
             _signalBus.Subscribe<CurrencySpawnSignal>(CurrencySpawn);
             
             Vector2 topRightScreenPosition = new Vector2(Screen.width, Screen.height);
@@ -47,18 +46,11 @@ namespace Asteroids
             topRightPos.x -= _settings.cornerXPadding;
             topRightPos.y -= _settings.cornerYPadding;
             _coinCollectTarget = topRightPos;
-            
-            //_mainCanvasRect.gameObject.SetActive(false);
         }
         
         public void Dispose()
         {
             _signalBus.Unsubscribe<CurrencySpawnSignal>(CurrencySpawn);
-        }
-
-        private void GameStateChanged(GameStateChangedSignal signal)
-        {
-            
         }
 
         private void CurrencySpawn(CurrencySpawnSignal signal)

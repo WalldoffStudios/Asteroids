@@ -340,7 +340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <HeaderContainerRect>k__BackingField: {fileID: 5712484631742678954}
-  <CoinsContainer>k__BackingField: {fileID: 0}
+  <HealthContainer>k__BackingField: {fileID: 5712484632328358234}
   <HealthText>k__BackingField: {fileID: 5712484631538541755}
   <HealthRect>k__BackingField: {fileID: 5712484631367404649}
   <CurrencyText>k__BackingField: {fileID: 5712484632219894518}
