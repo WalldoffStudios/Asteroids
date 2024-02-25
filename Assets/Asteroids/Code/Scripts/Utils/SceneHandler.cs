@@ -31,18 +31,43 @@ namespace Asteroids
         public void Initialize()
         {
             _signalBus.Subscribe<TriggerSceneChangeSignal>(ChangeScene);
+            _signalBus.Subscribe<PlayerDiedSignal>(PlayerLimbo);
         }
 
         public void Dispose()
         {
             _signalBus.Unsubscribe<TriggerSceneChangeSignal>(ChangeScene);
+            _signalBus.Unsubscribe<PlayerDiedSignal>(PlayerLimbo);
+        }
+
+        //Player stays in limbo 5 seconds after dying, then changes scene
+        private void PlayerLimbo()
+        {
+            MonoBehaviourHelper.Instance.InvokeWithDelay(PlayerDied, 5.0f);
+        }
+
+        private void PlayerDied()
+        {
+            LoadScene(1, false);
         }
 
         private void ChangeScene(TriggerSceneChangeSignal signal)
         {
-            var sceneLoadOperation = SceneManager.LoadSceneAsync(signal.SceneIndex, LoadSceneMode.Single);
-            sceneLoadOperation.completed += SceneLoadCompleted;
-            _currentSceneIndex = signal.SceneIndex;
+            LoadScene(signal.SceneIndex, true);
+        }
+
+        private void LoadScene(int index, bool async)
+        {
+            if (async == true)
+            {
+                var sceneLoadOperation = SceneManager.LoadSceneAsync(index, LoadSceneMode.Single);
+                sceneLoadOperation.completed += SceneLoadCompleted;
+            }
+            else
+            {
+                SceneManager.LoadScene(index);
+            }
+            _currentSceneIndex = index;
         }
 
         private void SceneLoadCompleted(AsyncOperation operation)

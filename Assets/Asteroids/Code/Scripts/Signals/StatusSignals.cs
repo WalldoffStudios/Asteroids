@@ -14,6 +14,8 @@ namespace Asteroids
         public PlayerHealthInitializedSignal(int amount) => MaxHealth = amount;
     }
 
+    public class PlayerDiedSignal { }
+
     public class ObjectDestroyedSignal
     {
         public int ObjectId { get; private set; }

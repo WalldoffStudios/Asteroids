@@ -68,7 +68,11 @@ namespace Asteroids
         private void DecreaseHealth(int amount)
         {
             _currentHealth = Mathf.Max(0, _currentHealth + amount);
-            if(_currentHealth == 0) _player.Died();
+            if (_currentHealth == 0)
+            {
+                _player.Died();
+                _signalBus.Fire<PlayerDiedSignal>();
+            }
         }
     }   
 }

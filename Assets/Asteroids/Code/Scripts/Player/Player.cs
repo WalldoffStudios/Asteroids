@@ -50,9 +50,6 @@ namespace Asteroids
             _rigidBody.velocity = Vector2.zero;
             _collider.enabled = false;
             Renderer.enabled = false;
-
-            //todo: Quick and dirty way to force respawning when dying
-            SceneManager.LoadScene(1);
         }
     }   
 }

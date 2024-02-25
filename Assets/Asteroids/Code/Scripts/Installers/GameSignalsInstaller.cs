@@ -26,6 +26,7 @@ namespace Asteroids
             //Status signals
             Container.DeclareSignal<PlayerHealthStatusChangedSignal>();
             Container.DeclareSignal<PlayerHealthInitializedSignal>();
+            Container.DeclareSignal<PlayerDiedSignal>();
             Container.DeclareSignal<ObjectDestroyedSignal>();
             
             //Currency signals

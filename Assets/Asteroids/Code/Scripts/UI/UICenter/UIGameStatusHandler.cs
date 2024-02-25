@@ -20,11 +20,13 @@ namespace Asteroids
         public void Initialize()
         {
             _signalBus.Subscribe<GameStateChangedSignal>(GameStateChanged);
+            _signalBus.Subscribe<PlayerDiedSignal>(PlayerDied);
         }
         
         public void Dispose()
         {
             _signalBus.Unsubscribe<GameStateChangedSignal>(GameStateChanged);
+            _signalBus.Unsubscribe<PlayerDiedSignal>(PlayerDied);
         }
 
         private void GameStateChanged(GameStateChangedSignal signal)
@@ -46,6 +48,15 @@ namespace Asteroids
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+        }
+
+        private void PlayerDied()
+        {
+            _countDownLabelText.gameObject.SetActive(true);
+            _countDownText.gameObject.SetActive(true);
+            
+            _countDownLabelText.text = "Game Over! Restarting in:";
+            MonoBehaviourHelper.Instance.GameCountdown(_countDownText, 5.0f);
         }
 
         private void StartGameCountDown()
