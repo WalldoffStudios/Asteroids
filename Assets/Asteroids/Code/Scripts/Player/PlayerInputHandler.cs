@@ -1,9 +1,10 @@
+using System;
 using UnityEngine;
 using Zenject;
 
 namespace Asteroids
 {
-    public class PlayerInputHandler : ITickable
+    public class PlayerInputHandler : IInitializable, ITickable, IDisposable
     {
         private readonly PlayerInputState _inputState;
         private readonly SignalBus _signalBus;
@@ -14,8 +15,26 @@ namespace Asteroids
             _signalBus = signalBus;
         }
 
+        private GameStates _currentState;
+        
+        public void Initialize()
+        {
+            _signalBus.Subscribe<GameStateChangedSignal>(GameStateChanged);               
+        }
+
+        public void Dispose()
+        {
+            _signalBus.Unsubscribe<GameStateChangedSignal>(GameStateChanged);
+        }
+
+        private void GameStateChanged(GameStateChangedSignal signal)
+        {
+            _currentState = signal.State;
+        }
+
         public void Tick()
         {
+            if(_currentState != GameStates.Playing) return;
             CheckMovementInput();
             CheckZoomInput();
             CheckFiringInput();
@@ -63,12 +82,6 @@ namespace Asteroids
         {
             Vector2 mousePos = Input.mousePosition;
             _signalBus.Fire(new AimInputSignal(mousePos));
-            
-            // if (Vector2.Distance(mousePos, _inputState.LastAimPosition) > 0.05f)
-            // {
-            //     _signalBus.Fire(new AimInputSignal(mousePos));
-            //     _inputState.LastAimPosition = mousePos;
-            // }
         }
     }   
 }
