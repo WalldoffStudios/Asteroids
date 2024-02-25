@@ -29,6 +29,7 @@ namespace Asteroids
 
         private void AimInput(AimInputSignal signal)
         {
+            if(_player.IsDead == true) return;
             Vector2 mouseWorldPosition = _camera.ScreenToWorldPoint(signal.AimPosition);
 
             Vector2 direction = (mouseWorldPosition - _player.Position).normalized;

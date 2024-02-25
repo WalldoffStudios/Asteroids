@@ -12,12 +12,14 @@ namespace Asteroids
             public float cooldownDelay;
         }
 
+        private readonly Player _player;
         private readonly IWeapon _equippedWeapon;
         private readonly Settings _settings;
         private readonly SignalBus _signalBus;
 
-        public PlayerWeaponHandler(IWeapon weapon, Settings settings, SignalBus signalBus)
+        public PlayerWeaponHandler(Player player, IWeapon weapon, Settings settings, SignalBus signalBus)
         {
+            _player = player;
             _equippedWeapon = weapon;
             _settings = settings;
             _signalBus = signalBus;
@@ -43,6 +45,7 @@ namespace Asteroids
 
         public void Tick()
         {
+            if(_player.IsDead == true) return;
             _ticksSinceLastShot += Time.deltaTime;
             if (_ticksSinceLastShot > _settings.cooldownDelay && _isFiring)
             {
