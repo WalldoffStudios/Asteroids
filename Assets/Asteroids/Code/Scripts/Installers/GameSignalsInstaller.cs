@@ -8,6 +8,10 @@ namespace Asteroids
         {
             SignalBusInstaller.Install(Container);
             
+            //Addressable signals
+            Container.DeclareSignal<AssetsDownloadedSignal>();
+            Container.DeclareSignal<AssetsBoundSignal>();
+            
             //GameManager signals
             Container.DeclareSignal<GameStateChangedSignal>();
 

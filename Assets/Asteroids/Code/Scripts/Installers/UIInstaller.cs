@@ -33,6 +33,8 @@ namespace Asteroids
                     .WithInitialSize(20)
                     .FromComponentInNewPrefab(settings.UICoinPrefab)
                     .UnderTransform(settings.MainCanvasTransform));
+
+            Container.BindInterfacesAndSelfTo<UIMainCanvas>().AsSingle().WithArguments(settings.MainCanvasTransform);
         }
         
         public class UICoinPool : MonoPoolableMemoryPool<CoinSpawnParams, IMemoryPool, UICoin>

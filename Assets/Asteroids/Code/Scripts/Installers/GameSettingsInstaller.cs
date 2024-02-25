@@ -31,5 +31,7 @@ namespace Asteroids
             
             Container.BindInstance(coinManagerSettings).IfNotBound();
         }
+        
+        
     }   
 }

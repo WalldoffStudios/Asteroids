@@ -9,12 +9,13 @@ namespace Asteroids
         public Transform ShootPoint { get; }
         public LayerMask CollisionLayers { get; }
         
-        public Player(Rigidbody2D rigidBody, SpriteRenderer renderer, Transform shootPoint, LayerMask collisionLayers)
+        public Player(Rigidbody2D rigidBody, SpriteRenderer renderer, Transform shootPoint, LayerMask collisionLayers, PlayerTextureAsset playerData)
         {
             _rigidBody = rigidBody;
             Renderer = renderer;
             ShootPoint = shootPoint;
             CollisionLayers = collisionLayers;
+            Renderer.sprite = playerData.PlayerTexture;
         }
         public bool IsDead { get; private set; }
         

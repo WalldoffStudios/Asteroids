@@ -18,7 +18,7 @@ namespace Asteroids
 
         public override void InstallBindings()
         {
-            Container.BindInterfacesAndSelfTo<GameManager>().AsSingle();
+            //Container.BindInterfacesAndSelfTo<GameManager>().AsSingle();
             
             //Container.Bind<ScreenBorders>().AsSingle().WithArguments(Camera.main);
             Container.BindInterfacesAndSelfTo<ScreenBorders>().AsSingle().WithArguments(Camera.main);
@@ -37,7 +37,7 @@ namespace Asteroids
                     .FromComponentInNewPrefab(_settings.LazerBulletPrefab)
                     .UnderTransformGroup("Lazer Bullets"));
             
-            GameSignalsInstaller.Install(Container);
+            // GameSignalsInstaller.Install(Container);
         }
         
         public class AsteroidPool : MonoPoolableMemoryPool<AsteroidSpawnParams, IMemoryPool, Asteroid>

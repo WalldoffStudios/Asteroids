@@ -1,4 +1,6 @@
+using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Zenject;
 
 namespace Asteroids
@@ -19,7 +21,7 @@ namespace Asteroids
         public GameStateChangedSignal(GameStates state) => State = state;
     }
     
-    public class GameManager : IInitializable
+    public class GameManager : IInitializable, IDisposable
     {
         private readonly SignalBus _signalBus;
         private GameStates _currentState;
@@ -32,7 +34,37 @@ namespace Asteroids
         public void Initialize()
         {
             //ChangeState(GameStates.Boot);
+            Debug.Log("GameManager was initialized");
+            _signalBus.Subscribe<AssetsBoundSignal>(DownloadedAssets);
+            ChangeState(GameStates.Boot);
+        }
+
+        public void Dispose()
+        {
+            _signalBus.Unsubscribe<AssetsBoundSignal>(DownloadedAssets);
+        }
+
+        private void DownloadedAssets()
+        {
+            //ChangeState(GameStates.Boot);
+            var loadOperation = SceneManager.LoadSceneAsync(1, LoadSceneMode.Single);
+            loadOperation.completed += SceneLoaded;
+        }
+
+        private void SceneLoaded(AsyncOperation operation)
+        {
+            ChangeState(GameStates.WaitingToStart);
             
+            operation.completed -= SceneLoaded;
+            
+            MonoBehaviourHelper.Instance.InvokeWithDelay(StartGame, 5.0f);
+            //MonoBehaviourHelper.Instance.GameCountdown();
+        }
+
+        private void StartGame()
+        {
+            Debug.Log("Starting playing state");
+            ChangeState(GameStates.Playing);
         }
 
         private void ChangeState(GameStates newState)

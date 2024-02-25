@@ -17,12 +17,12 @@ MonoBehaviour:
     m_SerializedData: []
   m_GUID: b4e437fa7ce644fbea551705d5fe0315
   m_SerializeEntries:
-  - m_GUID: c5755710bebec4e9c84ef3f743b9ec33
-    m_Address: Assets/Asteroids/Art/Textures/Ship.png
-    m_ReadOnly: 0
-    m_SerializedLabels: []
   - m_GUID: 0646d1a43f4d940568411adfa141acf1
     m_Address: Assets/Asteroids/Audio/SoundEffects/pew.wav
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: c5755710bebec4e9c84ef3f743b9ec33
+    m_Address: Assets/Asteroids/Art/Textures/Ship.png
     m_ReadOnly: 0
     m_SerializedLabels: []
   m_ReadOnly: 0

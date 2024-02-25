@@ -28,13 +28,22 @@ namespace Asteroids
         public void Initialize()
         {
             _currentHealth = _settings.maxHealth;
-            _signalBus.Fire(new PlayerHealthInitializedSignal(_settings.maxHealth));
+            _signalBus.Subscribe<GameStateChangedSignal>(GameStateChanged);
             _signalBus.Subscribe<PlayerHealthStatusChangedSignal>(HandleHealthChange);
         }
 
         public void Dispose()
         {
+            _signalBus.Unsubscribe<GameStateChangedSignal>(GameStateChanged);
             _signalBus.Unsubscribe<PlayerHealthStatusChangedSignal>(HandleHealthChange);
+        }
+
+        private void GameStateChanged(GameStateChangedSignal signal)
+        {
+            if (signal.State == GameStates.Playing)
+            {
+                _signalBus.Fire(new PlayerHealthInitializedSignal(_settings.maxHealth));
+            }
         }
 
         private void HandleHealthChange(PlayerHealthStatusChangedSignal signal)

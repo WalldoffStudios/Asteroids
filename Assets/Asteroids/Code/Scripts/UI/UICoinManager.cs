@@ -48,7 +48,7 @@ namespace Asteroids
             topRightPos.y -= _settings.cornerYPadding;
             _coinCollectTarget = topRightPos;
             
-            _mainCanvasRect.gameObject.SetActive(false);
+            //_mainCanvasRect.gameObject.SetActive(false);
         }
         
         public void Dispose()
