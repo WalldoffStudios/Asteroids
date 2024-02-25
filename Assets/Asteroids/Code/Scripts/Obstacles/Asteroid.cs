@@ -95,7 +95,7 @@ namespace Asteroids
             _signalBus.Fire(new ObjectDestroyedSignal(_id, position, asteroidTransform.localScale.x));
             _signalBus.Fire(new CurrencySpawnSignal(position, 2));
             
-            _pool.Despawn(this);
+            if(_pool != null) _pool.Despawn(this);
         }
         
         public class Factory : PlaceholderFactory<AsteroidSpawnParams, Asteroid>
