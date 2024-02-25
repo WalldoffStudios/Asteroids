@@ -4,7 +4,6 @@ namespace Asteroids
 {
     public class PlayerInputState
     {
-        public Vector2 LastAimPosition { get; set; }
         public bool LastShootingState { get; set; }
         public bool LastMovementState { get; set; }
         public float HorizontalInput { get; set; }

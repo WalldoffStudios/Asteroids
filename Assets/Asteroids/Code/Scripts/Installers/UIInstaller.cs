@@ -9,11 +9,11 @@ namespace Asteroids
         [Serializable]
         public class Settings
         {
-            public RectTransform MainCanvasTransform;
-            public GameObject HeaderCanvasPrefab;
-            public GameObject CenterCanvasPrefab;
-            public RectTransform CoinParent;
-            public GameObject UICoinPrefab;
+            public RectTransform mainCanvasTransform;
+            public GameObject headerCanvasPrefab;
+            public GameObject centerCanvasPrefab;
+            public RectTransform coinParent;
+            public GameObject uiCoinPrefab;
         }
 
         [SerializeField] private Settings settings;
@@ -22,31 +22,31 @@ namespace Asteroids
         {
             //todo: bind ui classes here
             Container.Bind<UIHeaderCanvas>()
-                .FromComponentInNewPrefab(settings.HeaderCanvasPrefab)
-                .UnderTransform(settings.MainCanvasTransform)
+                .FromComponentInNewPrefab(settings.headerCanvasPrefab)
+                .UnderTransform(settings.mainCanvasTransform)
                 .AsSingle();
 
             Container.BindInterfacesTo<UIPlayerStatusHandler>().AsSingle();
 
-            Container.BindInterfacesAndSelfTo<UICoinManager>().AsSingle().WithArguments(settings.MainCanvasTransform);
+            Container.BindInterfacesAndSelfTo<UICoinManager>().AsSingle().WithArguments(settings.mainCanvasTransform);
             Container.BindInterfacesTo<UICurrencyHandler>().AsSingle();
 
             Container.BindFactory<CoinSpawnParams, UICoin, UICoin.Factory>()
                 .FromPoolableMemoryPool<CoinSpawnParams, UICoin, UICoinPool>(poolBinder => poolBinder
                     .WithInitialSize(20)
-                    .FromComponentInNewPrefab(settings.UICoinPrefab)
-                    .UnderTransform(settings.CoinParent));
+                    .FromComponentInNewPrefab(settings.uiCoinPrefab)
+                    .UnderTransform(settings.coinParent));
 
             Container.Bind<UICenterCanvas>()
-                .FromComponentInNewPrefab(settings.CenterCanvasPrefab)
-                .UnderTransform(settings.MainCanvasTransform)
+                .FromComponentInNewPrefab(settings.centerCanvasPrefab)
+                .UnderTransform(settings.mainCanvasTransform)
                 .AsSingle();
 
             Container.BindInterfacesTo<UIGameStatusHandler>().AsSingle();
 
-            Container.BindInterfacesAndSelfTo<UIMainCanvas>().AsSingle().WithArguments(settings.MainCanvasTransform);
+            Container.BindInterfacesAndSelfTo<UIMainCanvas>().AsSingle().WithArguments(settings.mainCanvasTransform);
 
-            //this is just bound to trigger gamesceneSetup event
+            //this is just bound to trigger gameSceneSetup event
             Container.BindInterfacesTo<LateInitializer>().AsSingle();
         }
         

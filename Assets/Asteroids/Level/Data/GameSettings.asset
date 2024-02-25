@@ -16,10 +16,10 @@ MonoBehaviour:
     AsteroidPrefab: {fileID: 8772397792345427996, guid: cc1299521d6274d6b9f7a4efb4fe07ae, type: 3}
     LazerBulletPrefab: {fileID: 229259816734823446, guid: b202363bdcc134c82bc3f8ce756e1a3f, type: 3}
   moveSettings:
-    MoveSpeed: 40
+    MoveSpeed: 30
     MaxSpeed: 40
   healthSettings:
-    maxHealth: 100
+    maxHealth: 30
   playerWeaponSettings:
     cooldownDelay: 0.5
   playerBorderSettings:
@@ -44,7 +44,7 @@ MonoBehaviour:
     edgeCheckDistance: 0.3
     teleportEdgeCheckDistance: 2
     teleportDistance: 0.25
-    spawnBorderOffset: 0.15
+    spawnBorderOffset: 0.1
   coinManagerSettings:
     minPopupSpeed: 1
     maxPopupSpeed: 3

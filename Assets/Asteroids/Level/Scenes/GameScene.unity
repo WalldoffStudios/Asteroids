@@ -412,7 +412,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 454723053}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -657,11 +657,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
-    MainCanvasTransform: {fileID: 33820099}
-    HeaderCanvasPrefab: {fileID: 5712484631742678955, guid: 179074b7d834e4595b51edc1e7f57632, type: 3}
-    CenterCanvasPrefab: {fileID: 8543358671417133215, guid: dfab2ba63ee784be8a3b935a577f4430, type: 3}
-    CoinParent: {fileID: 197529068}
-    UICoinPrefab: {fileID: 3284298306102536216, guid: 159ebb1070d394f8885eb319700556b4, type: 3}
+    mainCanvasTransform: {fileID: 33820099}
+    headerCanvasPrefab: {fileID: 5712484631742678955, guid: 179074b7d834e4595b51edc1e7f57632, type: 3}
+    centerCanvasPrefab: {fileID: 8543358671417133215, guid: dfab2ba63ee784be8a3b935a577f4430, type: 3}
+    coinParent: {fileID: 197529068}
+    uiCoinPrefab: {fileID: 3284298306102536216, guid: 159ebb1070d394f8885eb319700556b4, type: 3}
 --- !u!1 &1453207770
 GameObject:
   m_ObjectHideFlags: 0

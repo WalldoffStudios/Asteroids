@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using Zenject;
 
@@ -42,8 +41,6 @@ namespace Asteroids
         public void SetDirection(Vector2 direction)
         {
             rigidBody.AddForce(direction * _speed, ForceMode2D.Impulse);
-            //Vector2 velocity = direction * _speed;
-            //rigidBody.velocity = velocity;
 
             Vector2 velocity = rigidBody.velocity;
             float angle = Mathf.Atan2(velocity.y, velocity.x) * Mathf.Rad2Deg - 90.0f;

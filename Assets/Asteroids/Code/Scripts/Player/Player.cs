@@ -11,13 +11,13 @@ namespace Asteroids
         public Transform ShootPoint { get; }
         public LayerMask CollisionLayers { get; }
         
-        public Player(Collider2D collider, Rigidbody2D rigidBody, SpriteRenderer renderer, Transform shootPoint, LayerMask collisionLayers, PlayerTextureReference playerData)
+        public Player(PlayerInstaller.Settings settings, PlayerTextureReference playerData)
         {
-            _collider = collider;
-            _rigidBody = rigidBody;
-            Renderer = renderer;
-            ShootPoint = shootPoint;
-            CollisionLayers = collisionLayers;
+            _collider = settings.collider;
+            _rigidBody = settings.rigidBody;
+            Renderer = settings.renderer;
+            ShootPoint = settings.shootPoint;
+            CollisionLayers = settings.collisionLayers;
             Renderer.sprite = playerData.PlayerTexture;
         }
         public bool IsDead { get; private set; }
@@ -51,6 +51,7 @@ namespace Asteroids
             _collider.enabled = false;
             Renderer.enabled = false;
 
+            //todo: Quick and dirty way to force respawning when dying
             SceneManager.LoadScene(1);
         }
     }   

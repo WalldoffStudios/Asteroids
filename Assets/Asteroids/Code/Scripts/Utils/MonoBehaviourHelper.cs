@@ -77,7 +77,7 @@ namespace Asteroids
                 if(tweenTransform != null) tweenTransform.localScale = Vector2.one * scaleMultiplier;
                 yield return null;
             }
-            tweenTransform.localScale = Vector2.one * startScale;
+            if(tweenTransform != null) tweenTransform.localScale = Vector2.one * startScale;
         }
     }   
 }

@@ -20,9 +20,7 @@ namespace Asteroids
 
         public override void InstallBindings()
         {
-            Container.Bind<Player>().AsSingle().WithArguments(settings.collider, settings.rigidBody, settings.renderer, settings.shootPoint, settings.collisionLayers);
-            //Container.BindInstance(_speed).WhenInjectedInto<ShipInputHandler>();
-            // Container.BindInterfacesAndSelfTo<PlayerFacade>().FromComponentInHierarchy().AsSingle();
+            Container.Bind<Player>().AsSingle().WithArguments(settings);
             Container.BindInterfacesAndSelfTo<PlayerFacade>().FromComponentInChildren().AsSingle();
             Container.BindInterfacesTo<PlayerInputHandler>().AsSingle();
             Container.BindInterfacesTo<PlayerMoveHandler>().AsSingle();

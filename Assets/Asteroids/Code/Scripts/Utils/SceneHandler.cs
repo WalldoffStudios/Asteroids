@@ -47,7 +47,10 @@ namespace Asteroids
 
         private void SceneLoadCompleted(AsyncOperation operation)
         {
-            _signalBus.Fire(new SceneLoadCompletedSignal(_currentSceneIndex));
+            Debug.Log("Finished loading scene");
+            
+            //todo: nothing listens to this one atm so I dont want to fire it
+            //_signalBus.Fire(new SceneLoadCompletedSignal(_currentSceneIndex));
         }
     }   
 }

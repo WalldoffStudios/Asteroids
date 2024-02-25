@@ -99,7 +99,6 @@ namespace Asteroids
             }
 
             _signalBus.Fire(new CurrencyAmountChangedSignal(1));
-            Debug.Log("Should despawn coin");
             _pool.Despawn(this);
         }
         

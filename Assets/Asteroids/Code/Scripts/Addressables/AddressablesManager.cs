@@ -73,19 +73,6 @@ namespace Asteroids
                 loadingStatusText.text = $"Coin texture downloaded";
                 UpdateLoadStatusText(operationsSuccessful);
             }
-            
-        
-            // Load the audio clip
-            // AsyncOperationHandle<AudioClip> audioClipHandle = audioClipReference.LoadAssetAsync<AudioClip>();
-            // yield return audioClipHandle;
-            // if (audioClipHandle.Status == AsyncOperationStatus.Succeeded)
-            // {
-            //     AudioClip audioClip = audioClipHandle.Result;
-            //     testingAudioSource.clip = audioClip;
-            //     testingAudioSource.Play();
-            //     operationsSuccessful++;
-            //     Debug.Log($"Successfully loaded player audio clip with name {audioClip.name}");
-            // }
 
             if (operationsSuccessful == _totalDownloadOperations)
             {
@@ -105,7 +92,6 @@ namespace Asteroids
             projectContainer.BindInstance(_coinTextureReference).IfNotBound();
             
             _signalBus.Fire(new TriggerSceneChangeSignal(1));
-            //_signalBus.Fire(new AssetsBoundSignal());
         }
     }   
 }

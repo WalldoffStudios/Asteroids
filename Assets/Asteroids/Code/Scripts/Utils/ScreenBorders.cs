@@ -50,30 +50,13 @@ namespace Asteroids
             _extentHeight = _camera.orthographicSize;
             _extentWidth = _camera.aspect * _camera.orthographicSize;
         }
-
-        // private float Bottom => -ExtentHeight;
         private float Bottom => -_extentHeight;
-
-        //private float Top => ExtentHeight;
         private float Top => _extentHeight;
-
-        // private float Left => -ExtentWidth;
-        //
-        // private float Right => ExtentWidth;
         private float Left => -_extentWidth;
 
         private float Right => _extentWidth;
-
-        //private float ExtentHeight => _camera.orthographicSize;
         private float _extentHeight;
         private float _extentWidth;
-
-        //public float Height => ExtentHeight * 2.0f;
-
-        //private float ExtentWidth => _camera.aspect * _camera.orthographicSize;
-
-        //public float Width => ExtentWidth * 2.0f;
-
 
         public bool IsInsideScreenBounds(Vector2 position)
         {
