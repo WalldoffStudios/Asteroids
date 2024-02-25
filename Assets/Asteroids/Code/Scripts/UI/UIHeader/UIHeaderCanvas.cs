@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Asteroids
 {
@@ -15,5 +16,6 @@ namespace Asteroids
         
         [field: SerializeField] public TextMeshProUGUI CurrencyText { get; private set; } = null;
         [field: SerializeField] public RectTransform CurrencyImageRect { get; private set; } = null;
+        [field: SerializeField] public Image CurrencyImage { get; private set; } = null;
     }   
 }

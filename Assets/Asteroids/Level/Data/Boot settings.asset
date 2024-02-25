@@ -18,3 +18,8 @@ MonoBehaviour:
       m_SubObjectName: 
       m_SubObjectType: 
       m_EditorAssetChanged: 0
+    CoinTextureReference:
+      m_AssetGUID: 4b191f02eee0644729638bbf5a82f01e
+      m_SubObjectName: 
+      m_SubObjectType: 
+      m_EditorAssetChanged: 0

@@ -43,19 +43,6 @@ namespace Asteroids
                 Vector2 teleportPosition = _screenBorders.GetTeleportPosition(_player.Position, _player.Velocity, 0.0f);
                 _player.Position = teleportPosition;
             }
-            // if (_screenBorders.IsInsideScreenBounds(_player.Position) == false)
-            // {
-            //     // Vector2 teleportPosition = _screenBorders.GetTeleportPosition(_player.Position, _player.Velocity, 0.0f);
-            //     // _player.Position = teleportPosition;
-            //     return;
-            // }
-            // if (_screenBorders.IsNearInsideEdge(_player.Position) == false || _settings.bounceOnBorders == false) return;
-            //
-            // if (_settings.bounceOnBorders == true)
-            // {
-            //     Vector2 direction = _screenBorders.GetBounceDirection(_player.Position, _player.Velocity);
-            //     _player.Bounce(direction);   
-            // }
         }
     }   
 }

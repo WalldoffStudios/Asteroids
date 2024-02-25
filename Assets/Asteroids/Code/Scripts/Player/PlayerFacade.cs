@@ -14,17 +14,13 @@ namespace Asteroids
             _player = player;
             _signalBus = signalBus;
         }
-        
-        public bool IsDead => _player.IsDead;
-        
-        public float Rotation => _player.Rotation;
 
         private void Update()
         {
-            if(IsDead == true) return;
+            if(_player.IsDead == true) return;
             
             Vector3 localEulers = transform.localEulerAngles;
-            localEulers.z = Rotation;
+            localEulers.z = _player.Rotation;
             transform.rotation = Quaternion.Euler(localEulers);
         }
 

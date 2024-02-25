@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Asteroids
@@ -11,12 +12,18 @@ namespace Asteroids
         private readonly SignalBus _signalBus;
         private readonly TextMeshProUGUI _currencyText;
         private readonly RectTransform _currencyImageRect;
+        private readonly Image _currencyImage; 
 
-        public UICurrencyHandler(UIHeaderCanvas headerCanvas, SignalBus signalBus)
+        public UICurrencyHandler(
+            UIHeaderCanvas headerCanvas,
+            SignalBus signalBus,
+            CoinTextureReference coinTextureReference)
         {
             _signalBus = signalBus;
             _currencyText = headerCanvas.CurrencyText;
             _currencyImageRect = headerCanvas.CurrencyImageRect;
+            _currencyImage = headerCanvas.CurrencyImage;
+            _currencyImage.sprite = coinTextureReference.CoinTexture;
         }
 
         private int _currentCurrencyCount;

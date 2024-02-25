@@ -9,7 +9,7 @@ namespace Asteroids
         public Transform ShootPoint { get; }
         public LayerMask CollisionLayers { get; }
         
-        public Player(Rigidbody2D rigidBody, SpriteRenderer renderer, Transform shootPoint, LayerMask collisionLayers, PlayerTextureAsset playerData)
+        public Player(Rigidbody2D rigidBody, SpriteRenderer renderer, Transform shootPoint, LayerMask collisionLayers, PlayerTextureReference playerData)
         {
             _rigidBody = rigidBody;
             Renderer = renderer;

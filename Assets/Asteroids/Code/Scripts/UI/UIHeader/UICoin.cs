@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Asteroids
@@ -20,9 +21,16 @@ namespace Asteroids
     public class UICoin : MonoBehaviour, IPoolable<CoinSpawnParams, IMemoryPool>
     {
         [SerializeField] private RectTransform rectTransform;
-        
-        [Inject]
+        [SerializeField] private Image coinImage;
+
         private SignalBus _signalBus;
+
+        [Inject]
+        public void Construct(SignalBus signalBus, CoinTextureReference coinTexture)
+        {
+            _signalBus = signalBus;
+            coinImage.sprite = coinTexture.CoinTexture;
+        }
         
         private float _popupSpeed;
         private float _collectSpeed;
